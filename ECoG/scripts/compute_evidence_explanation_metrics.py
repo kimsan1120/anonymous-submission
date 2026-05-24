@@ -17,7 +17,7 @@ import yaml
 
 try:
     from scipy.optimize import linear_sum_assignment
-except Exception:  # pragma: no cover - optional fallback
+except Exception:
     linear_sum_assignment = None
 
 
@@ -133,7 +133,6 @@ def parse_predicted_evidence(evidence_section: str) -> list[EvidenceItem]:
     if not section:
         return []
 
-    # Prefer numbered/bulleted evidence items. Each item may wrap to multiple lines.
     pattern = re.compile(
         r"(?:^|\n)\s*(?:\d+\s*[\).]|[-*])\s*(.*?)(?=(?:\n\s*(?:\d+\s*[\).]|[-*])\s*)|\Z)",
         flags=re.DOTALL,

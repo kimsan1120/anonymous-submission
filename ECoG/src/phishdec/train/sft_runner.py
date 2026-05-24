@@ -13,7 +13,7 @@ import torch.nn.functional as F
 from datasets import Dataset
 try:
     from torch.utils.tensorboard import SummaryWriter
-except Exception:  # pragma: no cover - optional dependency
+except Exception:  
     SummaryWriter = None
 from transformers import (
     AutoModelForCausalLM,
@@ -28,12 +28,12 @@ from trl import SFTConfig, SFTTrainer
 
 try:
     from transformers import BitsAndBytesConfig
-except Exception:  # pragma: no cover - optional dependency
+except Exception:  
     BitsAndBytesConfig = None
 
 try:
     from peft import LoraConfig, PeftModel, TaskType, get_peft_model, prepare_model_for_kbit_training
-except Exception:  # pragma: no cover - optional dependency
+except Exception:  
     LoraConfig = None
     PeftModel = None
     TaskType = None
@@ -1173,8 +1173,8 @@ def build_label_only_tokenized_datasets(
             attention_mask = list(full_enc.get("attention_mask", [1] * len(input_ids)))
             prefix_ids = list(prefix_enc["input_ids"])
 
-            # Length-based masking can fail when tokenizer keeps the same length
-            # but mutates tail tokens after appending the label (e.g. "정답: " vs "정답: 0").
+            
+            
             prefix_len = _longest_common_prefix_len(prefix_ids, input_ids)
 
             labels = list(input_ids)
@@ -2698,8 +2698,8 @@ class JointEvidenceExplanationTrainer(LabelExplanationTrainer):
         reconstruction_margin_loss = label_loss.new_zeros(())
         if self.reconstruction_loss_weight > 0.0:
             reconstruction_head = head_model.joint_reconstruction_classifier
-            # Keep DDP graph consistent across ranks even when a local batch has
-            # no reconstruction tokens (common with small per-device batch sizes).
+            
+            
             reconstruction_loss = _zero_from_module(reconstruction_head, last_hidden)
             reconstruction_ce_loss = reconstruction_loss
             reconstruction_margin_loss = reconstruction_loss
@@ -2991,8 +2991,8 @@ def train_with_trl(
     if compose_label_reason_target and not reason_col:
         reason_col = target_col if target_col != label_col else "reason_value"
 
-    # Backward compatibility: old configs with target_col=target_text can still
-    # train on lean CSVs that only keep label/reason_value.
+    
+    
     if (not compose_label_reason_target) and str(target_col) == "target_text":
         try:
             train_preview = _read_csv_normalized(train_csv)
@@ -3101,7 +3101,7 @@ def train_with_trl(
             "metric_for_best_model uses strict generation metric, but train.eval_generate_metrics is false."
         )
 
-    # logging_dir: ensure uniqueness per run to avoid TensorBoard merge/overwrite
+    
     user_logging_dir = train_cfg.get("logging_dir")
     if user_logging_dir:
         logging_dir = os.path.join(user_logging_dir, os.path.basename(run_dir))
@@ -3121,7 +3121,7 @@ def train_with_trl(
         "warmup_ratio": warmup_ratio,
         "weight_decay": weight_decay,
         "logging_steps": logging_steps,
-        # evaluation_strategy/ eval_strategy is set after we know which key is accepted
+        
         "save_strategy": save_strategy,
         "save_total_limit": int(train_cfg.get("save_total_limit", 2)),
         "save_only_model": save_only_model,
@@ -3131,7 +3131,7 @@ def train_with_trl(
         "load_best_model_at_end": load_best_model,
         "metric_for_best_model": metric_for_best,
         "greater_is_better": greater_is_better,
-        # tensorboard is the sane default; can be overridden to ["none"] or ["wandb", ...]
+        
         "report_to": train_cfg.get("report_to", "tensorboard"),
         "logging_dir": logging_dir,
         "dataloader_num_workers": dataloader_num_workers,
@@ -3153,12 +3153,12 @@ def train_with_trl(
     if ddp_find_unused_parameters is not None:
         arg_kwargs["ddp_find_unused_parameters"] = bool(ddp_find_unused_parameters)
     allowed = inspect.signature(args_cls).parameters
-    # evaluation_strategy parameter is named differently in SFTConfig
+    
     if "evaluation_strategy" in allowed:
         arg_kwargs["evaluation_strategy"] = eval_strategy_val
     elif "eval_strategy" in allowed:
         arg_kwargs["eval_strategy"] = eval_strategy_val
-    # strip keys not supported by this args class
+    
     arg_kwargs = {k: v for k, v in arg_kwargs.items() if k in allowed and v is not None}
     training_args = args_cls(**arg_kwargs)
 
@@ -3361,7 +3361,7 @@ def train_with_trl(
                 **trainer_kwargs,
             )
     elif label_only_loss:
-        # Keep default behavior intact; only switch path when explicitly requested.
+        
         print("[info] train.label_only_loss=true -> using label-only masked loss with HF Trainer.")
         inference_prompt_builder = build_inference_prompt_builder(prompt_cfg)
         train_tok_ds, eval_tok_ds, label_stats = build_label_only_tokenized_datasets(
@@ -3440,7 +3440,7 @@ def train_with_trl(
             "eval_dataset": eval_ds,
             "args": training_args,
         }
-        # tokenization arg name changed across TRL versions
+        
         if "tokenizer" in sft_sig:
             sft_kwargs["tokenizer"] = tokenizer
         elif "processing_class" in sft_sig:
@@ -3449,7 +3449,7 @@ def train_with_trl(
         if "dataset_text_field" in sft_sig:
             sft_kwargs["dataset_text_field"] = "text"
         elif "formatting_func" in sft_sig:
-            # formatting_func should return string or list[str]; we return string to satisfy add_eos expectations
+            
             sft_kwargs["formatting_func"] = lambda ex: " ".join(ex["text"]) if isinstance(ex["text"], list) else str(ex["text"])
 
         if "max_seq_length" in sft_sig:

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 from __future__ import annotations
 
 import argparse
@@ -154,9 +154,9 @@ SCENARIOS: tuple[Scenario, ...] = (
     ),
 )
 
-# Unified generation budget by scenario.
-# SMS keeps previously tuned values.
-# Voice is capped for truncation-safe validation/eval.
+
+
+
 SCENARIO_MAX_NEW_TOKENS: dict[str, int] = {
     "A": 172,
     "B": 172,
@@ -187,7 +187,7 @@ def _eval_top_p(temperature: float, top_p: float) -> float:
 
 
 def _scenario_max_input_margin(scenario: Scenario) -> int:
-    # Voice prompts are much longer; keep a smaller safety margin to reduce truncation.
+    
     return 16 if scenario.modality == "voice" else 64
 
 
@@ -484,7 +484,7 @@ def _csv_num_rows(csv_path: str) -> int:
         raise FileNotFoundError(f"Missing CSV for schedule estimation: {path}")
     with path.open("r", encoding="utf-8-sig", newline="") as f:
         reader = csv.reader(f)
-        # header + rows
+        
         n_all = sum(1 for _ in reader)
     n_rows = max(0, n_all - 1)
     _CSV_ROWS_CACHE[key] = int(n_rows)
@@ -1088,7 +1088,7 @@ def run_config(cfg_path: Path, orchestrator_log: Path) -> str:
             if "[done] run_dir=" in line:
                 run_dir = line.split("[done] run_dir=", 1)[1].strip()
             elif "[run.sh]" in line and "run_dir=" in line:
-                # eval_decode does not emit "[done] run_dir=..."; fall back to run_decode.sh header.
+                
                 run_dir = line.split("run_dir=", 1)[1].strip()
     rc = proc.wait()
     if rc != 0:

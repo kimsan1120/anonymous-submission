@@ -182,7 +182,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--backend", default="hf")
     parser.add_argument("--dtype", default="bf16")
     parser.add_argument("--eval-dtype", default="bf16")
-
     parser.add_argument("--voice-epochs", type=float, default=7.0)
     parser.add_argument("--voice-lr", type=float, default=3e-5, help="Stage 2 reason SFT LR")
     parser.add_argument("--voice-batch-size", type=int, default=None)
@@ -190,8 +189,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--voice-eval-batch-size", type=int, default=None)
     parser.add_argument("--voice-hf-batch-size", type=int, default=None)
     parser.add_argument("--voice-max-length", type=int, default=2200)
-
-    # Kept for CLI compatibility with existing A~G runners. Voice-only code ignores these.
     parser.add_argument("--sms-epochs", type=float, default=7.0)
     parser.add_argument("--sms-lr", type=float, default=3e-5)
     parser.add_argument("--sms-batch-size", type=int, default=None)

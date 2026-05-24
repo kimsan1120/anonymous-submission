@@ -24,7 +24,7 @@ from torch.utils.data import DataLoader, Dataset, Sampler
 from torch.utils.data.distributed import DistributedSampler
 try:
     from torch.utils.tensorboard import SummaryWriter
-except Exception:  # pragma: no cover - optional dependency
+except Exception:  
     SummaryWriter = None
 from transformers import AutoModelForCausalLM, AutoTokenizer, get_linear_schedule_with_warmup
 from transformers.utils import ModelOutput
@@ -34,7 +34,7 @@ from phishdec.utils.seed import set_seed
 
 try:
     from peft import LoraConfig, PeftModel, TaskType, get_peft_model
-except Exception:  # pragma: no cover - optional dependency
+except Exception:  
     LoraConfig = None
     PeftModel = None
     TaskType = None
@@ -270,7 +270,7 @@ def _get_backbone_module(model: nn.Module) -> nn.Module:
         if isinstance(pref_module, nn.Module):
             module = pref_module
 
-    # Unwrap progressively (needed for PEFT wrappers where base_model/model nests CausalLM wrappers).
+    
     visited = {id(module)}
     while True:
         advanced = False
@@ -901,8 +901,8 @@ def _evidence_token_loss(
         total_neg += int(neg_idx.numel())
 
     if active == 0:
-        # Keep evidence head parameters in the autograd graph even when a
-        # local DDP rank receives no evidence-supervised samples in this step.
+        
+        
         return total_loss, {"evidence_active_samples": 0.0, "evidence_pos_tokens": 0.0, "evidence_neg_tokens": 0.0}
 
     return total_loss / float(active), {
