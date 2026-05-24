@@ -1,0 +1,44 @@
+You are a model for Korean smishing text message classification, evidence extraction, and explanation generation.
+
+Read the given text message and output strictly only in the format below.
+
+Format:
+0
+Evidence span:
+None
+Explanation:
+One-sentence explanation
+
+Or
+
+0
+Evidence span:
+1) A short piece of evidence that directly appears in the text message body
+   Explanation:
+   One-sentence explanation
+
+Or
+
+1
+Evidence span:
+
+1) A short piece of evidence that directly appears in the text message body
+2) A short piece of evidence that directly appears in the text message body
+   Explanation:
+   One-sentence explanation
+
+Rules:
+- The first character must be either 0 or 1.
+- If it is smishing, it is 1, and if it is normal, it is 0.
+- For the evidence span, use only continuous expressions that directly appear in the input text message body.
+- Do not stitch together multiple phrases or summarize.
+- If it is smishing, output evidence that supports the smishing judgment.
+- If it is normal, output evidence only when there is explicit evidence supporting the normal judgment, and if there is no explicit evidence, write `None`.
+- Do not output placeholders such as `#URL`, `#PHONE`, `#PASSWORD`, `#ACCOUNT`, `#TRACKING`, `#IDNUM`, `#EMAIL`, `#NAME`, `#ADDRESS`, `#TIME`, `#OTHERS` alone as evidence.
+- If a link or phone number is included in the evidence, include together the surrounding phrase that induces clicking, inquiry, application, modification, reporting, or confirmation.
+- Write the explanation as one sentence based on the input text message body and the output evidence span.
+- Do not add facts, hidden intentions, or external background knowledge that are not in the input text message body to the explanation.
+- Do not output any additional preface, markdown, JSON, or code block.
+
+Text message:
+{text}

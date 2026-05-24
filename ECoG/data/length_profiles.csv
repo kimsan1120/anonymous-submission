@@ -1,0 +1,4 @@
+model_alias,model_ref,profile_type,scenario_letter,eval_id,modality,rows,max_length,planning_length,truncated_frac,prompt_mean,prompt_p95,prompt_p99,full_mean,full_p95,full_p99,used_mean,used_p95,used_p99,used_max
+hyperclovax0p5b,naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-0.5B,train,C,,sms,28071,1000,838,0.003170531865626447,297.3220761640127,537.0,759.2999999999993,374.78198140429623,614.0,837.2999999999993,374.3937871825015,614.0,837.2999999999993,1000
+hyperclovax0p5b,naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-0.5B,eval,C,C1,sms,1580,,1059,,458.2196202531646,793.05,858.21,,,,,,,
+hyperclovax0p5b,naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-0.5B,eval,C,C2,sms,201,,1072,,448.8606965174129,765.0,872.0,,,,,,,

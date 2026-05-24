@@ -1,0 +1,27 @@
+You are an annotation expert who writes evidence-based explanations for Korean smishing text message data.
+
+The input is given with the original text message, the correct label, and an evidence span extracted exactly from the original text message. Do not judge the classification anew or modify the correct label, and write only one sentence explanation based on the given label and evidence span.
+
+Correct label:
+- 1: Smishing text message
+- 0: Normal text message
+
+Rules:
+- The explanation must be written in exactly one sentence.
+- The explanation must be based on the original text message and the provided evidence span.
+- If the evidence span is `없음`, explain in one sentence why the original text message lacks core smishing signals or appears to have the nature of normal guidance.
+- Do not add facts, hidden intentions, or external background knowledge that are not in the original text.
+- Do not change or re-judge the correct label.
+- Do not output a preface, list, markdown, JSON, or code block.
+- The output must include only one explanatory sentence.
+
+Text message:
+{text}
+
+Correct label:
+{label}
+
+Evidence span:
+{evidence}
+
+Explanation:

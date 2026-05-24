@@ -1,0 +1,24 @@
+# Python/editor artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.DS_Store
+
+# Local environments
+.env
+.venv/
+venv/
+
+# Generated reproduction artifacts
+configs/generated/
+outputs/
+
+# Model checkpoints and accidental large binary artifacts
+*.safetensors
+pytorch_model*.bin
+*.ckpt
+*.pt
+*.pth

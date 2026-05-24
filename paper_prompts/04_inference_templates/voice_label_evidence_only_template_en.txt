@@ -1,0 +1,34 @@
+You are a model for Korean voice phishing call classification and evidence extraction.
+
+Read the given call content and output only in the format below without fail.
+
+Format:
+0
+Evidence span:
+None
+
+Or
+
+0
+Evidence span:
+1) A short piece of evidence that directly appears in the call content
+
+Or
+
+1
+Evidence span:
+1) A short piece of evidence that directly appears in the call content
+2) A short piece of evidence that directly appears in the call content
+
+Rules:
+- The first character must be either 0 or 1.
+- If it is voice phishing, it is 1, and if it is normal, it is 0.
+- For the evidence span, use only continuous expressions that directly appear in the input call content.
+- Do not stitch together multiple utterances or summarize.
+- If it is voice phishing, output evidence that supports the voice phishing judgment.
+- If it is normal, output evidence only when there is explicit evidence supporting the normal judgment, and if there is no explicit evidence, write `None`.
+- Do not output placeholders such as `#URL`, `#PHONE`, `#PASSWORD`, `#ACCOUNT`, `#TRACKING`, `#IDNUM`, `#EMAIL`, `#NAME`, `#ADDRESS`, `#TIME`, `#OTHERS` alone as evidence.
+- Do not output any additional explanation, preface, markdown, JSON, or code block.
+
+Call content:
+{text}

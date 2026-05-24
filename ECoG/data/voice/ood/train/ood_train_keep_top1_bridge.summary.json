@@ -1,0 +1,24 @@
+{
+  "finance_clean_rows": 1714,
+  "government_clean_rows": 4011,
+  "finance": {
+    "rows": 1714,
+    "keep_matched_rows": 353,
+    "keep_supervised_rows": 353,
+    "top1_matched_rows": 353,
+    "top1_supervised_rows": 353
+  },
+  "government": {
+    "rows": 4011,
+    "keep_matched_rows": 563,
+    "keep_supervised_rows": 43,
+    "top1_matched_rows": 563,
+    "top1_supervised_rows": 43
+  },
+  "outputs": {
+    "finance_keep": "data/ood/voice/train/ood_train_finance_evidence_keep.csv",
+    "finance_top1": "data/ood/voice/train/ood_train_finance_evidence_top1.csv",
+    "government_keep": "data/ood/voice/train/ood_train_government_evidence_keep.csv",
+    "government_top1": "data/ood/voice/train/ood_train_government_evidence_top1.csv"
+  }
+}

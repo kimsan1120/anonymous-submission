@@ -1,0 +1,92 @@
+name: main_ablation
+description: Public seed-10 ablation matrix for label/evidence/rationale experiments.
+default_seed: 10
+default_model:
+  alias: hyperclovax0p5b
+  model_ref: naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-0.5B
+default_scenario_letters: ABCDEFG
+default_cuda_visible_devices: 0,1,2
+data_roots:
+  sms_in_domain: data/sms/in_domain
+  sms_ood: data/sms/ood
+  sms_evidence_keep: data/sms/evidence/keep
+  voice_in_domain: data/voice/in_domain
+  voice_ood: data/voice/ood
+  voice_evidence_keep: data/voice/evidence/keep
+methods:
+  label_evidence:
+    runner_method: label_evidence
+    suite_name: label_evidence
+    benchmark_type: label_evidence
+    target_format: label_span
+    command:
+    - python
+    - scripts/run_ablation.py
+    - --method
+    - label_evidence
+    - --seed
+    - "10"
+  label_rationale:
+    runner_method: label_rationale
+    suite_name: label_explanation
+    benchmark_type: label_explanation
+    target_format: label_first_explanation
+    reconstruction_lambda: 0.0
+    command:
+    - python
+    - scripts/run_ablation.py
+    - --method
+    - label_rationale
+    - --seed
+    - "10"
+  label_rationale_rec:
+    runner_method: label_rationale_rec
+    suite_name: label_explanation
+    benchmark_type: label_explanation
+    target_format: label_first_explanation
+    reconstruction_lambdas:
+    - 0.0
+    - 0.05
+    - 0.1
+    - 0.2
+    reconstruction_scope: explanation
+    reconstruction_pooling: mean
+    command:
+    - python
+    - scripts/run_ablation.py
+    - --method
+    - label_rationale_rec
+    - --rec-lambdas
+    - 0,0.05,0.1,0.2
+    - --seed
+    - "10"
+  label_rationale_rec_last_pooling:
+    runner_method: label_rationale_rec_last_pooling
+    suite_name: label_explanation
+    benchmark_type: label_explanation
+    target_format: label_first_explanation
+    reconstruction_lambda: 0.1
+    reconstruction_scope: explanation
+    reconstruction_pooling: last
+    command:
+    - python
+    - scripts/run_ablation.py
+    - --method
+    - label_rationale_rec_last_pooling
+    - --rec-lambda
+    - "0.1"
+    - --seed
+    - "10"
+  last_label_ablation:
+    runner_method: last_label_ablation
+    suite_name: label_evidence_explanation
+    benchmark_type: label_evidence_explanation
+    target_format: span_explanation_label
+    reconstruction_lambda: 0.0
+    command:
+    - python
+    - scripts/run_ablation.py
+    - --method
+    - last_label_ablation
+    - --seed
+    - "10"

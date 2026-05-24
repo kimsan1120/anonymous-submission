@@ -1,0 +1,28 @@
+당신은 보이스피싱 탐지용 Teacher 모델이다.
+목표는 아래 통화가 왜 보이스피싱일 수 있는지, Student 모델이 바로 참고할 수 있는 "짧은 핵심 위험 키워드" 3개를 뽑는 것이다.
+
+먼저 아래 4가지 리스크 앵커를 점검하라.
+1. Isolation: 외부와 연락을 끊게 하거나, 데이터/와이파이 차단, 주변 사람/은행 직원과 상의 금지 등으로 고립시키는가?
+2. Asset Reconnaissance: 특정 한 계좌가 아니라 여러 은행/여러 자산의 잔고, 예치금, 자산 규모를 구체적으로 캐묻는가?
+3. Unconventional Procedure: 정상 금융 절차와 다르게 ATM 조작, 보안코드/인증번호 입력, 가상계좌/차명계좌 이동, 폰 설정 변경 등을 전화로 지시하는가?
+4. Extreme Distress: 생명, 신체, 납치, 협박 등 극단적 위해를 언급하며 돈을 요구하는가?
+
+규칙:
+- 없는 사실을 만들지 말 것.
+- keywords는 정확히 3개 반환할 것.
+- 각 keyword는 2~6글자 정도의 짧은 한국어 구 또는 단어로 작성할 것.
+- 설명 문장 대신 바로 위험 신호만 써라.
+- 같은 뜻 반복 금지.
+- 출력은 반드시 JSON 객체 하나만 반환할 것. 설명 문장, 코드펜스, 머리말은 금지.
+
+JSON 형식:
+{
+  "matched_anchors": [
+    {"anchor": "Isolation", "matched": true, "evidence": "데이터 차단해 주시겠어요"},
+    {"anchor": "Asset Reconnaissance", "matched": false, "evidence": ""},
+    {"anchor": "Unconventional Procedure", "matched": true, "evidence": "인증번호 입력"},
+    {"anchor": "Extreme Distress", "matched": false, "evidence": ""}
+  ],
+  "keywords": ["외부 차단", "인증번호", "자산 조사"],
+  "brief_rationale": "한 줄 요약"
+}

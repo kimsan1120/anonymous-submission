@@ -1,0 +1,15 @@
+{
+  "input_csv": "outputs/analysis/voice_teacher_evidence/functional_label01_finance_batch/gpt-4o_finance_full_batch/parsed_outputs.csv",
+  "master_csv": "data/ood/voice/train/ood_train_government_functional_pilot_master.csv",
+  "keep_train_csv": "data/ood/voice/train/ood_train_government_functional_keep_pilot.csv",
+  "top1_train_csv": "data/ood/voice/train/ood_train_government_functional_top1_pilot.csv",
+  "rows_total": 1711,
+  "label_counts": {
+    "1": 893,
+    "0": 818
+  },
+  "teacher_label_mismatch_rows": 15,
+  "label1_supervised_rows": 856,
+  "label0_rows_with_evidence": 272,
+  "note": "Current trainer forcibly disables evidence loss for label=0 in TextLabelDataset, so label0 evidence is preserved for analysis but not used in training unless trainer code changes."
+}

@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-05-23T20:12:24.574115",
+  "profile_args": {
+    "scenario_letters": [
+      "C"
+    ],
+    "sms_max_length": 1000,
+    "voice_max_length": 2200,
+    "decode_max_new_tokens": 200,
+    "batch_size": 256,
+    "target_format_version": "label_first_explanation_v1",
+    "models": [
+      {
+        "alias": "hyperclovax0p5b",
+        "model_ref": "naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-0.5B"
+      }
+    ]
+  },
+  "models": {
+    "hyperclovax0p5b": {
+      "model_ref": "naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-0.5B",
+      "tokenizer_name_or_path": "naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-0.5B",
+      "tokenizer_class": "GPT2Tokenizer",
+      "vocab_size": 110491,
+      "pad_token_id": 100257,
+      "eos_token_id": 100275,
+      "train": {
+        "C": {
+          "csv_path": "data/sms/reason/C_train.csv",
+          "rows": 28071,
+          "max_length": 1000,
+          "truncated_frac": 0.003170531865626447,
+          "full": {
+            "n": 28071,
+            "mean": 374.78198140429623,
+            "p50": 330.0,
+            "p90": 517.0,
+            "p95": 614.0,
+            "p99": 837.2999999999993,
+            "max": 2499
+          },
+          "used": {
+            "n": 28071,
+            "mean": 374.3937871825015,
+            "p50": 330.0,
+            "p90": 517.0,
+            "p95": 614.0,
+            "p99": 837.2999999999993,
+            "max": 1000
+          },
+          "prompt": {
+            "n": 28071,
+            "mean": 297.3220761640127,
+            "p50": 239.0,
+            "p90": 442.0,
+            "p95": 537.0,
+            "p99": 759.2999999999993,
+            "max": 2416
+          },
+          "planning_train_length_p99": 838
+        }
+      },
+      "eval": {
+        "C1": {
+          "csv_path": "data/sms/ood/test/finance_test.csv",
+          "split_name": "test",
+          "rows": 1580,
+          "decode_max_new_tokens": 200,
+          "prompt": {
+            "n": 1580,
+            "mean": 458.2196202531646,
+            "p50": 386.5,
+            "p90": 758.0,
+            "p95": 793.05,
+            "p99": 858.21,
+            "max": 16574
+          },
+          "planning_eval_length_p99_plus_new_tokens": 1059
+        },
+        "C2": {
+          "csv_path": "data/sms/ood/challenging/finance_challenging.csv",
+          "split_name": "challenging",
+          "rows": 201,
+          "decode_max_new_tokens": 200,
+          "prompt": {
+            "n": 201,
+            "mean": 448.8606965174129,
+            "p50": 425.0,
+            "p90": 692.0,
+            "p95": 765.0,
+            "p99": 872.0,
+            "max": 900
+          },
+          "planning_eval_length_p99_plus_new_tokens": 1072
+        }
+      }
+    }
+  }
+}

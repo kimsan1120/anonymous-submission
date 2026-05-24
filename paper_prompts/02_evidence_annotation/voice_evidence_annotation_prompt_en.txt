@@ -1,0 +1,84 @@
+You are an annotation expert who extracts decision-supporting functional evidence from Korean voice phishing call data.
+
+The input is already given with the correct label. Do not judge the classification anew, and extract only direct evidence copied exactly from the call transcript based on the given label.
+
+Goal:
+- Label 1: Extract 1~3 pieces of functional act evidence that support a voice phishing judgment
+- Label 0: Extract 0~2 pieces of explicit evidence that support normal procedure, normal consultation, or normal informativeness
+
+Important:
+- Evidence must be a continuous phrase copied exactly from the original text.
+- No paraphrasing, summarizing, rewriting, or stitching together multiple utterances.
+- Do not extract only a single keyword; extract at the clause or sentence level where an act, instruction, explanation, or guidance is revealed.
+- Spans consisting only of greetings, forms of address, simple backchannels, or general keywords are prohibited.
+- Spans consisting only of placeholders such as `#NAME`, `#ADDRESS`, `#TIME`, `#PHONE`, `#ACCOUNT`, `#CARD`, `#IDNUM`, `#URL`, `#PASSWORD`, `#EMAIL`, `#OTHERS` are prohibited.
+- Even if a placeholder is included, extract up to the surrounding phrase where a functional act such as transfer, authentication, confirmation, guidance, refusal, or explanation of an official procedure is revealed.
+- Do not extract the same Evidence redundantly.
+- For Label 0, if there is no active evidence of normality, leave items as an empty array `[]`. Do not force evidence that does not exist.
+- Account numbers, authentication, schedules, customer verification, institution names, and consultation procedures can appear even in normal calls. For Label 0, do not interpret these as voice phishing signals; extract only phrases where normal consultation or normal procedure is revealed.
+
+Allowed tags:
+
+When Label 1:
+- authority_impersonation
+- money_transfer_induction
+- threat_or_pressure
+- secrecy_or_isolation
+- credential_or_app_install
+- procedure_circumvention
+
+When Label 0:
+- official_channel_guidance
+- standard_procedure_guidance
+- suspicious_request_rejection
+- customer_initiated_inquiry
+- benign_information
+
+tag definitions:
+- authority_impersonation: Secures trust by impersonating an institution, employee, or person in charge
+- money_transfer_induction: Induces deposit, transfer, advance repayment, cash withdrawal, or account movement
+- threat_or_pressure: Forces action through urgency, threats, fear, or time pressure
+- secrecy_or_isolation: Requires not consulting with others, blocking external verification, or maintaining the call
+- credential_or_app_install: Induces app installation, authentication, password, code entry, or remote control
+- procedure_circumvention: Makes or justifies a bypass procedure different from normal procedure
+- official_channel_guidance: Guides to an official channel such as a main number, branch, official app, or official homepage
+- standard_procedure_guidance: Explains only general normal procedures
+- suspicious_request_rejection: Refuses or warns against a suspicious request
+- customer_initiated_inquiry: The customer inquired first and the counselor responds within the scope of that inquiry
+- benign_information: A normal informational response such as simple information provision, schedule, documents, or product explanation
+
+Priority(priority):
+- 1 is the most important.
+- For Label 1, put evidence that actually makes a person act at higher priority.
+- Examples: transfer, advance repayment, cash withdrawal, app installation, provision of authentication information, blocking external verification
+- For Label 0, put the evidence most directly related to a normality judgment at higher priority.
+- Examples: official channel guidance, general consultation procedure, response to customer request, refusal of a suspected fraud request
+
+Reason rules:
+- Must be 1 sentence.
+- Must be based only on the extracted Evidence.
+- Do not add facts that are not in the original text.
+- A Label 1 reason should concisely explain what functional induction makes it voice phishing.
+- A Label 0 reason should concisely explain what aspect shows normal consultation/normal procedure.
+- This reason is for evidence annotation review, and is managed separately from the final learning target rationale.
+
+The output must return exactly one JSON object. No code fences, explanations, or prefaces.
+
+Format:
+{
+  "label": 1,
+  "items": [
+    {
+      "tag": "money_transfer_induction",
+      "evidence": "a continuous phrase copied exactly from the original text",
+      "priority": 1
+    }
+  ],
+  "reason": "A one-sentence explanation based on the extracted evidence."
+}
+
+Input label:
+{label}
+
+Original text:
+{text}
