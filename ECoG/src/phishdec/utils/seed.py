@@ -31,7 +31,7 @@ def set_seed(seed: int = 10, deterministic: bool = True, benchmark: bool = False
             torch.cuda.manual_seed_all(seed)
 
         if deterministic:
-            # Required by CUDA deterministic kernels on some setups.
+            
             os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
         if hasattr(torch.backends, "cudnn"):

@@ -19,7 +19,6 @@ from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
     DataCollatorForLanguageModeling,
-    EarlyStoppingCallback,
     Trainer,
     TrainerCallback,
     TrainingArguments,
@@ -744,38 +743,6 @@ class StrictGenerationValidationCallback(TrainerCallback):
         if self._tb_writer is not None:
             self._tb_writer.close()
             self._tb_writer = None
-
-
-class WarmupEarlyStoppingCallback(EarlyStoppingCallback):
-    def __init__(
-        self,
-        *,
-        early_stopping_patience: int,
-        early_stopping_threshold: float = 0.0,
-        min_epochs: float = 0.0,
-        min_steps: int = 0,
-    ) -> None:
-        super().__init__(
-            early_stopping_patience=int(early_stopping_patience),
-            early_stopping_threshold=float(early_stopping_threshold),
-        )
-        self.min_epochs = float(min_epochs or 0.0)
-        self.min_steps = int(min_steps or 0)
-
-    def _warmup_ready(self, state) -> bool:
-        if int(getattr(state, "global_step", 0) or 0) < self.min_steps:
-            return False
-        if self.min_epochs <= 0.0:
-            return True
-        epoch = getattr(state, "epoch", None)
-        if epoch is None:
-            return False
-        return float(epoch) >= self.min_epochs
-
-    def on_evaluate(self, args, state, control, metrics, **kwargs):
-        if not self._warmup_ready(state):
-            return control
-        return super().on_evaluate(args, state, control, metrics, **kwargs)
 
 
 class EpochClassificationEvalCallback(TrainerCallback):
@@ -3070,14 +3037,6 @@ def train_with_trl(
     if metric_for_best is not None:
         metric_for_best = str(metric_for_best).strip() or None
     greater_is_better = train_cfg.get("greater_is_better")
-    early_stop_patience = train_cfg.get("early_stopping_patience")
-    if early_stop_patience is not None:
-        early_stop_patience = int(early_stop_patience)
-        if early_stop_patience <= 0:
-            early_stop_patience = None
-    early_stop_threshold = float(train_cfg.get("early_stopping_threshold", 0.0))
-    early_stop_min_epochs = float(train_cfg.get("early_stopping_min_epochs", 0.0))
-    early_stop_min_steps = int(train_cfg.get("early_stopping_min_steps", 0))
     eval_generate_metrics = bool(train_cfg.get("eval_generate_metrics", bool(eval_csv)))
     save_strategy = str(train_cfg.get("save_strategy", "steps")).lower()
     default_eval_strategy = "steps" if eval_csv else "no"
@@ -3085,12 +3044,12 @@ def train_with_trl(
 
     if not eval_csv:
         eval_strategy_val = "no"
-    if not load_best_model and early_stop_patience is None:
+    if not load_best_model:
         metric_for_best = None
         greater_is_better = None
 
-    if (load_best_model or early_stop_patience is not None) and not eval_csv:
-        raise ValueError("Early stopping / best-model loading requires data.eval_csv")
+    if load_best_model and not eval_csv:
+        raise ValueError("Best-model loading requires data.eval_csv")
     if load_best_model and save_strategy != eval_strategy_val:
         raise ValueError("load_best_model_at_end requires matching save_strategy and eval_strategy")
     if (
@@ -3172,15 +3131,6 @@ def train_with_trl(
                 text_col=text_col,
                 metric_label_col=metric_label_col,
                 prompt_cfg=prompt_cfg,
-            )
-        )
-    if early_stop_patience is not None:
-        callbacks.append(
-            WarmupEarlyStoppingCallback(
-                early_stopping_patience=int(early_stop_patience),
-                early_stopping_threshold=early_stop_threshold,
-                min_epochs=early_stop_min_epochs,
-                min_steps=early_stop_min_steps,
             )
         )
     if bool(train_cfg.get("write_epoch_classification_metrics", False)):
@@ -3519,14 +3469,6 @@ def train_text_only_causal_lm(
     if metric_for_best is not None:
         metric_for_best = str(metric_for_best).strip() or None
     greater_is_better = train_cfg.get("greater_is_better")
-    early_stop_patience = train_cfg.get("early_stopping_patience")
-    if early_stop_patience is not None:
-        early_stop_patience = int(early_stop_patience)
-        if early_stop_patience <= 0:
-            early_stop_patience = None
-    early_stop_threshold = float(train_cfg.get("early_stopping_threshold", 0.0))
-    early_stop_min_epochs = float(train_cfg.get("early_stopping_min_epochs", 0.0))
-    early_stop_min_steps = int(train_cfg.get("early_stopping_min_steps", 0))
     lr_scheduler_type = train_cfg.get("lr_scheduler_type", "cosine")
     max_steps = train_cfg.get("max_steps")
     save_strategy = str(train_cfg.get("save_strategy", "epoch")).lower()
@@ -3535,11 +3477,11 @@ def train_text_only_causal_lm(
 
     if eval_ds is None:
         eval_strategy = "no"
-    if not load_best_model and early_stop_patience is None:
+    if not load_best_model:
         metric_for_best = None
         greater_is_better = None
-    if (load_best_model or early_stop_patience is not None) and eval_strategy == "no":
-        raise ValueError("Early stopping / best-model loading requires data.eval_csv")
+    if load_best_model and eval_strategy == "no":
+        raise ValueError("Best-model loading requires data.eval_csv")
     if load_best_model and save_strategy != eval_strategy:
         raise ValueError("load_best_model_at_end requires matching save_strategy and eval_strategy")
 
@@ -3603,15 +3545,6 @@ def train_text_only_causal_lm(
     training_args = TrainingArguments(**arg_kwargs)
 
     callbacks = []
-    if early_stop_patience is not None:
-        callbacks.append(
-            WarmupEarlyStoppingCallback(
-                early_stopping_patience=int(early_stop_patience),
-                early_stopping_threshold=early_stop_threshold,
-                min_epochs=early_stop_min_epochs,
-                min_steps=early_stop_min_steps,
-            )
-        )
 
     model = _maybe_apply_peft(model, peft_cfg=peft_cfg, train_cfg=train_cfg, model_cfg=model_cfg)
 

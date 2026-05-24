@@ -45,8 +45,7 @@ def parse_args() -> argparse.Namespace:
         choices=("auto", "nested", "flat"),
         default="auto",
         help=(
-            "Raw benchmark layout. auto checks nested "
-            "{suite}/{bench}/{model} first, then flat {suite}/{model}."
+
         ),
     )
     parser.add_argument("--out-root", default="outputs/runs/benchmark_performance")
@@ -63,9 +62,7 @@ def parse_args() -> argparse.Namespace:
         choices=("all", "cpu", "bertscore-only"),
         default="all",
         help=(
-            "all computes every requested generated-sequence metric. cpu computes everything "
-            "except BERTScore. bertscore-only computes only BERTScore and merges it into the "
-            "existing generated_quality CSV."
+
         ),
     )
     parser.add_argument("--skip-bertscore", action="store_true")

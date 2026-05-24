@@ -44,33 +44,30 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Extract benchmark metrics in the A1/A2/B1,C1,D1/... tab-separated format."
     )
-    parser.add_argument("roots", nargs="+", help="Benchmark eval roots or model roots.")
+    parser.add_argument("roots", nargs="+")
     parser.add_argument(
         "--include-200",
         action="store_true",
-        help='Include run directories whose name contains "200". Default: exclude them.',
+
     )
     parser.add_argument(
         "--include-root-label",
         action="store_true",
-        help="Print the root path above each block.",
+
     )
     parser.add_argument(
         "--output-format",
         choices=("legacy-tsv", "main-macro-f1-csv", "classification-detail-csv"),
         default="legacy-tsv",
         help=(
-            "legacy-tsv keeps the old tab-separated table. main-macro-f1-csv writes only "
-            "per-category macro-F1 for the main table. classification-detail-csv writes "
-            "Accuracy, Recall-1, and Macro-F1 per category for appendix tables."
+
         ),
     )
     parser.add_argument(
         "--allow-partial-lines",
         action="store_true",
         help=(
-            "Emit grouped rows with blank cells when only part of the row is available, "
-            "for example F1 before G1 in per-alphabet runs."
+
         ),
     )
     return parser.parse_args()
@@ -150,7 +147,7 @@ def metrics_from_results_csv(run_dir: Path) -> dict[str, dict[str, float]] | Non
 
     by_category: dict[str, list[dict[str, str]]] = {}
     for row in rows:
-        by_category.setdefault(str(row["category"]), []).append(row)
+        by_category.setdefault(str(row.get("category", "")), []).append(row)
 
     return {cat: compute_binary_metrics(cat_rows) for cat, cat_rows in by_category.items()}
 
@@ -221,7 +218,7 @@ def extract_stage1_root(
 
         by_category: dict[str, list[dict[str, str]]] = {}
         for row in rows:
-            by_category.setdefault(str(row["category"]), []).append(row)
+            by_category.setdefault(str(row.get("category", "")), []).append(row)
 
         out[eval_id] = {
             cat: compute_binary_metrics(cat_rows)

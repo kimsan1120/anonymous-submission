@@ -7,11 +7,7 @@ default_model:
 default_scenario_letters: ABCDEFG
 default_cuda_visible_devices: 0,1,2
 data_roots:
-  sms_in_domain: data/sms/in_domain
-  sms_ood: data/sms/ood
   sms_evidence_keep: data/sms/evidence/keep
-  voice_in_domain: data/voice/in_domain
-  voice_ood: data/voice/ood
   voice_evidence_keep: data/voice/evidence/keep
 methods:
   label_evidence:

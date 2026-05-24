@@ -56,9 +56,9 @@ def _prepare_run_dirs(cfg, exp_name: str, out_dir_override: Optional[str]):
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=str, required=True, help="YAML config path")
-    parser.add_argument("--deepspeed", type=str, default=None, help="Path to deepspeed config (optional)")
-    parser.add_argument("--out_dir", type=str, default=None, help="Override output directory")
+    parser.add_argument("--config", type=str, required=True)
+    parser.add_argument("--deepspeed", type=str, default=None)
+    parser.add_argument("--out_dir", type=str, default=None)
     parser.add_argument("--lora_r", type=int, default=None)
     parser.add_argument("--lora_alpha", type=int, default=None)
     parser.add_argument("--lora_dropout", type=float, default=None)
@@ -66,7 +66,7 @@ def main() -> int:
         "--lora_target_modules",
         type=str,
         default=None,
-        help="Comma-separated target modules (optional)",
+
     )
     args = parser.parse_args()
 

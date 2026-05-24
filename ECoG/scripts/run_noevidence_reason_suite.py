@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 from __future__ import annotations
 
 import argparse
@@ -59,13 +59,13 @@ SCENARIOS: tuple[Scenario, ...] = (
         name="sms_in_domain_reason",
         modality="sms",
         setting_group="sms_in_domain",
-        train_csv="data/sms/reason/A_train.csv",
-        train_eval_csv="data/sms/reason/A_validation.csv",
+        train_csv="data/sms/evidence/keep/A_train.csv",
+        train_eval_csv="data/sms/evidence/keep/A_validation.csv",
         prompt_instruction_path=SMS_PROMPT,
         train_text_col="text",
         eval_targets=(
-            EvalTarget("A1", "test", "data/sms/in_domain/test.csv", "text"),
-            EvalTarget("A2", "challenging", "data/sms/in_domain/challenging.csv", "text"),
+            EvalTarget("A1", "test", "data/sms/evidence/keep/A_test.csv", "text"),
+            EvalTarget("A2", "challenging", "data/sms/evidence/keep/A_challenge.csv", "text"),
         ),
     ),
     Scenario(
@@ -73,13 +73,13 @@ SCENARIOS: tuple[Scenario, ...] = (
         name="sms_ood_credit_reason",
         modality="sms",
         setting_group="sms_ood",
-        train_csv="data/sms/reason/B_train.csv",
-        train_eval_csv="data/sms/reason/B_validation.csv",
+        train_csv="data/sms/evidence/keep/B_train.csv",
+        train_eval_csv="data/sms/evidence/keep/B_validation.csv",
         prompt_instruction_path=SMS_PROMPT,
         train_text_col="text",
         eval_targets=(
-            EvalTarget("B1", "test", "data/sms/ood/test/credit_test.csv", "text"),
-            EvalTarget("B2", "challenging", "data/sms/ood/challenging/credit_challenging.csv", "text"),
+            EvalTarget("B1", "test", "data/sms/evidence/keep/B_test.csv", "text"),
+            EvalTarget("B2", "challenging", "data/sms/evidence/keep/B_challenge.csv", "text"),
         ),
     ),
     Scenario(
@@ -87,13 +87,13 @@ SCENARIOS: tuple[Scenario, ...] = (
         name="sms_ood_finance_reason",
         modality="sms",
         setting_group="sms_ood",
-        train_csv="data/sms/reason/C_train.csv",
-        train_eval_csv="data/sms/reason/C_validation.csv",
+        train_csv="data/sms/evidence/keep/C_train.csv",
+        train_eval_csv="data/sms/evidence/keep/C_validation.csv",
         prompt_instruction_path=SMS_PROMPT,
         train_text_col="text",
         eval_targets=(
-            EvalTarget("C1", "test", "data/sms/ood/test/finance_test.csv", "text"),
-            EvalTarget("C2", "challenging", "data/sms/ood/challenging/finance_challenging.csv", "text"),
+            EvalTarget("C1", "test", "data/sms/evidence/keep/C_test.csv", "text"),
+            EvalTarget("C2", "challenging", "data/sms/evidence/keep/C_challenge.csv", "text"),
         ),
     ),
     Scenario(
@@ -101,13 +101,13 @@ SCENARIOS: tuple[Scenario, ...] = (
         name="sms_ood_parcel_reason",
         modality="sms",
         setting_group="sms_ood",
-        train_csv="data/sms/reason/D_train.csv",
-        train_eval_csv="data/sms/reason/D_validation.csv",
+        train_csv="data/sms/evidence/keep/D_train.csv",
+        train_eval_csv="data/sms/evidence/keep/D_validation.csv",
         prompt_instruction_path=SMS_PROMPT,
         train_text_col="text",
         eval_targets=(
-            EvalTarget("D1", "test", "data/sms/ood/test/parcel_test.csv", "text"),
-            EvalTarget("D2", "challenging", "data/sms/ood/challenging/parcel_challenging.csv", "text"),
+            EvalTarget("D1", "test", "data/sms/evidence/keep/D_test.csv", "text"),
+            EvalTarget("D2", "challenging", "data/sms/evidence/keep/D_challenge.csv", "text"),
         ),
     ),
     Scenario(
@@ -115,13 +115,13 @@ SCENARIOS: tuple[Scenario, ...] = (
         name="voice_in_domain_reason",
         modality="voice",
         setting_group="voice_in_domain",
-        train_csv="data/voice/reason/E_train.csv",
-        train_eval_csv="data/voice/reason/E_validation.csv",
+        train_csv="data/voice/evidence/keep/E_train.csv",
+        train_eval_csv="data/voice/evidence/keep/E_validation.csv",
         prompt_instruction_path=VOICE_PROMPT,
         train_text_col="text",
         eval_targets=(
-            EvalTarget("E1", "test", "data/voice/in_domain/test.csv", "text"),
-            EvalTarget("E2", "challenging", "data/voice/in_domain/challenge.csv", "text"),
+            EvalTarget("E1", "test", "data/voice/evidence/keep/E_test.csv", "text"),
+            EvalTarget("E2", "challenging", "data/voice/evidence/keep/E_challenge.csv", "text"),
         ),
     ),
     Scenario(
@@ -129,13 +129,13 @@ SCENARIOS: tuple[Scenario, ...] = (
         name="voice_ood_finance_reason",
         modality="voice",
         setting_group="voice_ood",
-        train_csv="data/voice/reason/F_train.csv",
-        train_eval_csv="data/voice/reason/F_validation.csv",
+        train_csv="data/voice/evidence/keep/F_train.csv",
+        train_eval_csv="data/voice/evidence/keep/F_validation.csv",
         prompt_instruction_path=VOICE_PROMPT,
         train_text_col="text",
         eval_targets=(
-            EvalTarget("F1", "test", "data/voice/ood/test/ood_test_finance.csv", "text"),
-            EvalTarget("F2", "challenging", "data/voice/ood/challenging/finance_ood_challenge.csv", "text"),
+            EvalTarget("F1", "test", "data/voice/evidence/keep/F_test.csv", "text"),
+            EvalTarget("F2", "challenging", "data/voice/evidence/keep/F_challenge.csv", "text"),
         ),
     ),
     Scenario(
@@ -143,13 +143,13 @@ SCENARIOS: tuple[Scenario, ...] = (
         name="voice_ood_government_reason",
         modality="voice",
         setting_group="voice_ood",
-        train_csv="data/voice/reason/G_train.csv",
-        train_eval_csv="data/voice/reason/G_validation.csv",
+        train_csv="data/voice/evidence/keep/G_train.csv",
+        train_eval_csv="data/voice/evidence/keep/G_validation.csv",
         prompt_instruction_path=VOICE_PROMPT,
         train_text_col="text",
         eval_targets=(
-            EvalTarget("G1", "test", "data/voice/ood/test/ood_test_government.csv", "text"),
-            EvalTarget("G2", "challenging", "data/voice/ood/challenging/government_ood_challenge.csv", "text"),
+            EvalTarget("G1", "test", "data/voice/evidence/keep/G_test.csv", "text"),
+            EvalTarget("G2", "challenging", "data/voice/evidence/keep/G_challenge.csv", "text"),
         ),
     ),
 )
@@ -239,29 +239,28 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
         description="Generate and optionally run A~G decoder-reason QLoRA suite."
     )
-    p.add_argument("--model", action="append", default=[], help="Format: alias=model_ref or model_ref")
+    p.add_argument("--model", action="append", default=[])
     p.add_argument(
         "--scenario-letters",
         default="ALL",
-        help="Scenario letters to run, e.g. BCDFG or B,C,D,F,G. Default: ALL",
+
     )
-    p.add_argument("--bench-name", default=None, help="Benchmark suite label")
+    p.add_argument("--bench-name", default=None)
     p.add_argument(
         "--suite-name",
         default="noevidence_reason_suite",
-        help="Benchmark namespace under configs/generated, outputs/runs/benchmarks, and outputs/analysis.",
+
     )
     p.add_argument(
         "--benchmark-layout",
         choices=("legacy", "nested", "flat"),
         default="legacy",
         help=(
-            "Directory layout. legacy preserves the historical noevidence_reason_suite layout; "
-            "nested uses {suite}/{bench}; flat uses {suite} directly."
+
         ),
     )
-    p.add_argument("--run", action="store_true", help="Actually execute train/eval via scripts/run_decode.sh")
-    p.add_argument("--skip-prepare-data", action="store_true", help="Assume prepared scenario train CSVs already exist")
+    p.add_argument("--run", action="store_true")
+    p.add_argument("--skip-prepare-data", action="store_true")
     p.add_argument("--cuda-visible-devices", default=None)
     p.add_argument("--seed", type=int, default=10)
     p.add_argument("--report-to", default="tensorboard")
@@ -308,43 +307,53 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--voice-hf-batch-size", type=int, default=None)
     p.add_argument("--dataloader-num-workers", type=int, default=2)
     p.add_argument("--save-total-limit", type=int, default=1)
-    p.add_argument("--train-eval-steps", type=int, default=0, help="<=0 means auto (same as logging_steps)")
-    p.add_argument("--train-save-steps", type=int, default=0, help="<=0 means auto (same as eval_steps)")
+    p.add_argument("--train-eval-steps", type=int, default=0)
+    p.add_argument("--train-save-steps", type=int, default=0)
     p.add_argument(
         "--primary-eval-epoch",
         type=float,
         default=7.0,
-        help="Default checkpoint epoch to use for downstream eval.",
+
     )
     p.add_argument(
         "--best-epoch-min",
         type=float,
         default=7.0,
-        help="Minimum epoch to consider when selecting the saved best checkpoint alias.",
+
     )
     p.add_argument(
         "--best-epoch-max",
         type=float,
         default=10.0,
-        help="Maximum epoch to consider when selecting the saved best checkpoint alias.",
+
     )
-    p.add_argument("--early-stopping-patience", type=int, default=0, help="<=0 means auto from patience ratio")
+    p.add_argument(
+        "--early-stopping-patience",
+        type=int,
+        default=0,
+
+    )
     p.add_argument("--early-stopping-threshold", type=float, default=0.0)
     p.add_argument(
         "--early-stopping-min-epochs",
         type=float,
         default=3.0,
-        help="Do not allow early stopping before this epoch.",
+
     )
     p.add_argument(
         "--early-stopping-min-steps",
         type=int,
         default=0,
-        help="Do not allow early stopping before this global step.",
+
     )
     p.add_argument("--metric-for-best-model", default=None)
-    p.add_argument("--logging-steps-ratio", type=float, default=0.05, help="Logging steps as ratio of total updates")
-    p.add_argument("--patience-ratio", type=float, default=0.10, help="Patience as ratio of total updates")
+    p.add_argument("--logging-steps-ratio", type=float, default=0.05)
+    p.add_argument(
+        "--patience-ratio",
+        type=float,
+        default=0.10,
+
+    )
     p.add_argument("--load-best-model-at-end", dest="load_best_model_at_end", action="store_true")
     p.add_argument("--no-load-best-model-at-end", dest="load_best_model_at_end", action="store_false")
     p.add_argument("--greater-is-better", dest="greater_is_better", action="store_true")
@@ -362,7 +371,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--force-rerun-eval",
         action="store_true",
-        help="Ignore completed eval runs and create fresh eval runs while still reusing completed training runs.",
+
     )
     p.add_argument(
         "--batch-scale",
@@ -379,21 +388,21 @@ def parse_args() -> argparse.Namespace:
         "--autobatch-conservative-steps",
         type=int,
         default=0,
-        help="Lower auto-computed batch sizes by N conservative ladder steps.",
+
     )
-    p.add_argument("--gradient-checkpointing", action="store_true", help="Enable gradient checkpointing")
-    p.add_argument("--no-length-bucket", dest="length_bucket", action="store_false", help="Disable length-grouped train sampling")
-    p.add_argument("--val-frac-a", type=float, default=1.00, help="Validation sampling fraction for scenario A")
-    p.add_argument("--val-frac-b", type=float, default=1.00, help="Validation sampling fraction for scenario B")
-    p.add_argument("--val-frac-c", type=float, default=1.00, help="Validation sampling fraction for scenario C")
-    p.add_argument("--val-frac-d", type=float, default=1.00, help="Validation sampling fraction for scenario D")
-    p.add_argument("--val-frac-e", type=float, default=1.00, help="Validation sampling fraction for scenario E")
-    p.add_argument("--val-frac-f", type=float, default=1.00, help="Validation sampling fraction for scenario F")
-    p.add_argument("--val-frac-g", type=float, default=1.00, help="Validation sampling fraction for scenario G")
+    p.add_argument("--gradient-checkpointing", action="store_true")
+    p.add_argument("--no-length-bucket", dest="length_bucket", action="store_false")
+    p.add_argument("--val-frac-a", type=float, default=1.00)
+    p.add_argument("--val-frac-b", type=float, default=1.00)
+    p.add_argument("--val-frac-c", type=float, default=1.00)
+    p.add_argument("--val-frac-d", type=float, default=1.00)
+    p.add_argument("--val-frac-e", type=float, default=1.00)
+    p.add_argument("--val-frac-f", type=float, default=1.00)
+    p.add_argument("--val-frac-g", type=float, default=1.00)
     p.add_argument(
         "--validation-subset-dir",
         default=str(ROOT / "data" / "arc" / "validation_subsets"),
-        help="Directory to write sampled validation CSVs.",
+
     )
     p.set_defaults(length_bucket=True, load_best_model_at_end=False, greater_is_better=True, use_validation=True)
     return p.parse_args()
@@ -562,8 +571,6 @@ def estimate_train_schedule(
     eval_steps = int(args.train_eval_steps) if int(args.train_eval_steps) > 0 else int(logging_steps)
     save_steps = int(args.train_save_steps) if int(args.train_save_steps) > 0 else int(eval_steps)
 
-    patience = int(args.early_stopping_patience) if int(args.early_stopping_patience) > 0 else None
-
     return {
         "num_rows": int(num_rows),
         "effective_batch_size": int(effective_batch),
@@ -572,7 +579,6 @@ def estimate_train_schedule(
         "logging_steps": int(logging_steps),
         "eval_steps": int(eval_steps),
         "save_steps": int(save_steps),
-        "early_stopping_patience": (int(patience) if patience is not None else None),
     }
 
 
@@ -971,20 +977,6 @@ def build_train_cfg(
                     "load_best_model_at_end": True,
                     "metric_for_best_model": "eval_label_loss",
                     "greater_is_better": False,
-                    **(
-                        {"early_stopping_patience": int(train_schedule["early_stopping_patience"])}
-                        if train_schedule["early_stopping_patience"] is not None
-                        else {}
-                    ),
-                    **(
-                        {
-                            "early_stopping_threshold": float(args.early_stopping_threshold),
-                            "early_stopping_min_epochs": float(args.early_stopping_min_epochs),
-                            "early_stopping_min_steps": int(args.early_stopping_min_steps),
-                        }
-                        if train_schedule["early_stopping_patience"] is not None
-                        else {}
-                    ),
                 }
                 if args.use_validation
                 else {}
@@ -1371,10 +1363,16 @@ def save_csv(path: Path, rows: list[dict[str, Any]]) -> None:
 
 def ensure_prepared_data(skip_prepare: bool, scenarios: tuple[Scenario, ...]) -> None:
     expected = [ROOT / scenario.train_csv for scenario in scenarios]
-    if skip_prepare and all(path.exists() for path in expected):
+    expected += [ROOT / scenario.train_eval_csv for scenario in scenarios]
+    expected += [ROOT / target.csv_path for scenario in scenarios for target in scenario.eval_targets]
+    missing = [path for path in expected if not path.exists()]
+    if not missing:
         return
-    cmd = [sys.executable, "scripts/prepare_noevidence_reason_suite_data.py"]
-    subprocess.run(cmd, cwd=str(ROOT), check=True)
+    missing_rel = [repo_rel(path) for path in missing]
+    raise FileNotFoundError(
+        "Missing prepared evidence/keep splits. The public artifact expects "
+        f"prebuilt files under data/sms/evidence/keep and data/voice/evidence/keep; missing: {missing_rel}"
+    )
 
 
 def main() -> int:

@@ -14,9 +14,9 @@ fi
 shift
 EXTRA_ARGS=("$@")
 
-# Guard against accidental multi-config positional inputs.
-# run_decode.sh supports exactly one config path; additional positional
-# YAML paths are almost always user mistakes and can make failures hard to debug.
+
+
+
 for arg in "${EXTRA_ARGS[@]:-}"; do
   if [[ "$arg" == *.yaml || "$arg" == *.yml ]]; then
     if [[ -f "$arg" ]]; then
@@ -71,7 +71,7 @@ mkdir -p "$RUN_DIR"
 
 cp "$CFG" "$RUN_DIR/config.yaml"
 
-# Optional CUDA_VISIBLE_DEVICES from config: run.cuda_visible_devices
+
 CFG_CUDA="$(python - "$RUN_DIR/config.yaml" <<'PY'
 import sys, yaml
 cfg = yaml.safe_load(open(sys.argv[1])) or {}

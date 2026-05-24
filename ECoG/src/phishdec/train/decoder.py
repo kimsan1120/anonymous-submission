@@ -459,7 +459,7 @@ class TextClassificationCollator:
     def __call__(self, rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
         texts = [str(row["text"]) for row in rows]
         labels = torch.tensor([int(row["label"]) for row in rows], dtype=torch.long)
-        categories = [str(row["category"]) for row in rows]
+        categories = [str(row.get("category", "")) for row in rows]
         row_ids = [int(row["row_id"]) for row in rows]
         enc = self.tokenizer(
             texts,
@@ -1545,7 +1545,6 @@ def run_decoder_classifier_from_config(
         evidence_warmup_epochs = int(_get_cfg(cfg, "train.evidence.warmup_epochs", 0))
         metric_for_best = str(_get_cfg(cfg, "train.metric_for_best_model", "macro_f1"))
         greater_is_better = bool(_get_cfg(cfg, "train.greater_is_better", True))
-        early_stopping_patience = _get_cfg(cfg, "train.early_stopping_patience")
         early_stopping_threshold = float(_get_cfg(cfg, "train.early_stopping_threshold", 0.0))
         min_epoch_for_best_model = _get_cfg(cfg, "train.min_epoch_for_best_model")
         if min_epoch_for_best_model is None:
@@ -1555,11 +1554,6 @@ def run_decoder_classifier_from_config(
                 else 1
             )
         min_epoch_for_best_model = max(1, int(min_epoch_for_best_model))
-        min_epoch_for_early_stopping = _get_cfg(cfg, "train.min_epoch_for_early_stopping")
-        if min_epoch_for_early_stopping is None:
-            min_epoch_for_early_stopping = int(min_epoch_for_best_model)
-        min_epoch_for_early_stopping = max(1, int(min_epoch_for_early_stopping))
-
         device = torch.device(
             f"cuda:{dist_info.local_rank}" if torch.cuda.is_available() else "cpu"
         )
@@ -2032,14 +2026,6 @@ def run_decoder_classifier_from_config(
                         },
                     )
 
-                if (
-                    early_stopping_patience is not None
-                    and eval_loader is not None
-                    and epoch >= int(min_epoch_for_early_stopping)
-                ):
-                    if epochs_without_improvement >= int(early_stopping_patience):
-                        stop_training = True
-
                 summary = {
                     "model_name": model_name,
                     "loss_mode": loss_mode,
@@ -2056,7 +2042,6 @@ def run_decoder_classifier_from_config(
                     "evidence_max_pred_spans": evidence_max_pred_spans,
                     "evidence_warmup_epochs": evidence_warmup_epochs,
                     "min_epoch_for_best_model": min_epoch_for_best_model,
-                    "min_epoch_for_early_stopping": min_epoch_for_early_stopping,
                     "peft_mode": peft_mode,
                     "best_epoch": best_epoch,
                     "metric_for_best_model": metric_for_best,

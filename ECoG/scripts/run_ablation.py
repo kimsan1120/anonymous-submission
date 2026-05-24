@@ -47,7 +47,7 @@ def parse_args() -> argparse.Namespace:
             "all",
         ),
     )
-    parser.add_argument("--model", action="append", default=[], help="alias=model_ref. Defaults to HyperCLOVAX 0.5B.")
+    parser.add_argument("--model", action="append", default=[])
     parser.add_argument("--scenario-letters", default="ABCDEFG")
     parser.add_argument("--eval-target-ids", default=None)
     parser.add_argument("--seed", type=int, default=10)
@@ -65,11 +65,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--decode-max-new-tokens", type=int, default=200)
     parser.add_argument("--sms-hf-batch-size", type=int, default=None)
     parser.add_argument("--voice-hf-batch-size", type=int, default=None)
-    parser.add_argument("--run", action="store_true", help="Actually train/evaluate. Without this, configs are generated only.")
-    parser.add_argument("--dry-run", action="store_true", help="Print resolved commands without generating configs or running.")
+    parser.add_argument("--run", action="store_true")
+    parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--no-eval-full-generation", dest="eval_full_generation", action="store_false")
-    parser.add_argument("--skip-bertscore", action="store_true", help="Skip BERTScore in benchmark performance reports.")
-    parser.add_argument("--extra-arg", action="append", default=[], help="Additional argument forwarded to run_evidence_reason_suite.py.")
+    parser.add_argument("--skip-bertscore", action="store_true")
+    parser.add_argument("--extra-arg", action="append", default=[])
     parser.set_defaults(eval_full_generation=True)
     return parser.parse_args()
 

@@ -29,7 +29,7 @@ def get_model_name(model_type: str, model_id: int, path: str = "models_args.json
     key_norm = key.strip()
     if key_norm in data:
         return data[key_norm][model_id]
-    # graceful fallback
+    
     return data["Decoder"][model_id]
 
 

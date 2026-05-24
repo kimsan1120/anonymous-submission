@@ -255,8 +255,7 @@ def parse_args() -> argparse.Namespace:
         "--suite-name",
         default=None,
         help=(
-            "Benchmark suite namespace under outputs/runs/benchmarks. "
-            "When omitted, search evidence_reason_suite plus the legacy SMS/Voice suite roots."
+
         ),
     )
     parser.add_argument("--model-alias", default="hyperclovax0p5b")
@@ -265,32 +264,31 @@ def parse_args() -> argparse.Namespace:
         choices=("nested", "flat"),
         default="nested",
         help=(
-            "Directory layout to search. nested uses {suite}/{bench}/{model}/eval; "
-            "flat uses {suite}/{model}/eval."
+
         ),
     )
     parser.add_argument("--run-name-contains", default="fullgen200")
     parser.add_argument(
         "--components",
         default="all",
-        help="Comma/space-separated quality components: consistency, evidence, explanation, or all.",
+
     )
     parser.add_argument(
         "--require-name-contains",
         action="append",
         default=[],
-        help="Require token in run directory name. Can be passed multiple times.",
+
     )
     parser.add_argument("--allow-missing", action="store_true")
     parser.add_argument(
         "--out-prefix",
         default="reports/evidence_explanation_metrics/hyperclovax0p5b_evidence_joint12_span_noidx_rec0p2_v1_maxnew200_balanced_20260429",
-    )
+)
     parser.add_argument("--compute-bertscore", action="store_true")
     parser.add_argument(
         "--bertscore-only",
         action="store_true",
-        help="Run only BERTScore for generated explanations; skip consistency, span, and ROUGE recomputation.",
+
     )
     parser.add_argument("--bertscore-model", default="klue/roberta-base")
     parser.add_argument("--bertscore-batch-size", type=int, default=16)

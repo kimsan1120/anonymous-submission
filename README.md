@@ -59,6 +59,27 @@ Runs the label-last target-order ablation.
 python scripts/run_ablation.py --method last_label_ablation --seed 10 --run
 ```
 
+## Reports
+
+### Raw outputs:
+
+```bash
+outputs/runs/benchmarks/{suite}/{model_alias}/...
+```
+
+### Aggregated reports:
+
+```bash
+outputs/runs/benchmark_performance/{benchmark_type}/{model_alias}/...
+```
+
+- for example, `label_rationale_rec`:
+
+```bash
+outputs/runs/benchmarks/label_explanation/hyperclovax0p5b/...
+outputs/runs/benchmark_performance/label_explanation/hyperclovax0p5b/...
+```
+
 
 
 

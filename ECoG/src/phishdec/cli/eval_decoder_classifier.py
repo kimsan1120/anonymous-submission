@@ -11,11 +11,11 @@ from phishdec.utils.env import setup_env
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=str, required=True, help="YAML config path")
-    parser.add_argument("--out_dir", type=str, default="", help="Optional run directory override")
-    parser.add_argument("--checkpoint_dir", type=str, default=None, help="Optional checkpoint/run dir override")
-    parser.add_argument("--eval_csv", type=str, default=None, help="Optional eval CSV override")
-    parser.add_argument("--test_csv", type=str, default=None, help="Optional test CSV override")
+    parser.add_argument("--config", type=str, required=True)
+    parser.add_argument("--out_dir", type=str, default="")
+    parser.add_argument("--checkpoint_dir", type=str, default=None)
+    parser.add_argument("--eval_csv", type=str, default=None)
+    parser.add_argument("--test_csv", type=str, default=None)
     args = parser.parse_args()
 
     cfg = load_yaml_config(args.config)

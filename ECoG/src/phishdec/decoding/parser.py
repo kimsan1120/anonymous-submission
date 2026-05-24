@@ -1,17 +1,17 @@
 import re
 from typing import Optional, Dict
 
-# 라인 단위 앵커: "정답: 0" / "answer: 1" / "label: 0"
-# - 라인 끝이 0/1로 끝나야 함 (정의 문장 "정답: 0 또는 1" 방지)
-# - 멀티라인 텍스트에서 매치되도록 (?m)
+
+
+
 _RE_ANCHOR_LINE = re.compile(
     r'(?im)^\s*(?:정답|answer|label)\s*[:：]\s*([01])\s*$'
 )
 _RE_ANCHOR_ANY = re.compile(r'(?i)(?:정답|answer|label)\s*[:：]\s*')
 
-# 뒤에서 가까운 0/1 후보:
-# - float(0.95, 1.0) 첫 자리 0/1 제외
-# - 숫자열(10, 101 등) 중간의 0/1 제외
+
+
+
 _RE01 = re.compile(r'(?<!\d)([01])(?!\d|\.\d)')
 _RE_LEADING_BINARY = re.compile(r'^\s*([01])')
 _TAIL_CHARS = 256
@@ -64,13 +64,13 @@ def parse_pred(
     if extra_map:
         merged.update({k.lower(): v for k, v in extra_map.items()})
 
-    # 0) 앵커(정답/answer/label)는 "라인 단위"로만 인정 + 마지막 매치 우선
+    
     ms = list(_RE_ANCHOR_LINE.finditer(low))
     if ms:
         return int(ms[-1].group(1))
 
-    # 0.5) 라인 앵커는 아니어도, 마지막 앵커 이후의 가까운 숫자를 우선
-    # (앵커 뒤에 답을 쓰고 그 뒤에 잡다한 숫자를 더 쓰는 경우 방지)
+    
+    
     anchors = list(_RE_ANCHOR_ANY.finditer(low))
     if anchors:
         start = anchors[-1].end()
@@ -79,13 +79,13 @@ def parse_pred(
         if toks_after_anchor:
             return int(toks_after_anchor[0])
 
-    # 1) 뒤에서 가까운 0/1: 전체가 아니라 마지막 구간만 본다
+    
     tail = low[-_TAIL_CHARS:]
     toks = _RE01.findall(tail)
     if toks:
         return int(toks[-1])
 
-    # 2) 매핑은 "짧은 출력"에만 적용
+    
     if low in merged:
         return merged[low]
 

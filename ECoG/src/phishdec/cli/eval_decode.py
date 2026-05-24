@@ -831,7 +831,7 @@ def _normalize_pass_fail(value: Any) -> str:
         return "FAIL"
 
     head = re.sub(r"[^A-Z가-힣]+", "", up)
-    # Common typos / odd partials observed in logs.
+    
     if head in {"PASS", "PAS", "PA", "P", "PARE"}:
         return "PASS"
     if head in {"FAIL", "FAL", "FA", "F", "FLIL", "FA일"}:
@@ -1184,23 +1184,23 @@ def main():
         "--model_name",
         type=str,
         default=None,
-        help="Preferred. Decoder/LLM: HF model id, Finetuned: local model dir.",
+
     )
-    parser.add_argument("--model_type", type=str, default=None, help="Decoder|LLM|Finetuned|Encoder")
+    parser.add_argument("--model_type", type=str, default=None)
     parser.add_argument("--eval_set", type=str, default=None)
     parser.add_argument("--method", type=str, default=None, choices=["vllm_decode", "hf_decode"])
     parser.add_argument("--seed", type=int, default=None)
-    parser.add_argument("--out_dir", type=str, default="", help="(optional) run directory to write outputs/logs")
+    parser.add_argument("--out_dir", type=str, default="")
     parser.add_argument("--n_devices", type=int, default=None)
     parser.add_argument("--result_path", type=str, default=None)
     parser.add_argument("--hf_batch_size", type=int, default=None)
     parser.add_argument("--max_input_tokens", type=int, default=None)
     parser.add_argument("--max_new_tokens", type=int, default=None)
-    parser.add_argument("--adapter_path", type=str, default=None, help="Optional PEFT adapter path")
+    parser.add_argument("--adapter_path", type=str, default=None)
     parser.add_argument(
         "--merge_adapter",
         action="store_true",
-        help="Merge adapter weights into base model for HF decode (always merged for vLLM)",
+
     )
     args = parser.parse_args()
 
@@ -1214,8 +1214,8 @@ def main():
         except Exception as e:
             raise RuntimeError(f"Failed to read config: {args.config} ({e})")
 
-    # env/seed
-    hf_tok = setup_env()  # .env에서 hf_token 읽어오는 함수라고 가정
+    
+    hf_tok = setup_env()  
 
     backend = _get_cfg(cfg, "model.backend", "vllm")
     method = args.method or ("vllm_decode" if backend == "vllm" else "hf_decode")
@@ -1360,7 +1360,7 @@ def main():
     else:
         result_path = "./outputs/results/causal_decode"
 
-    # IO
+    
     os.makedirs(result_path, exist_ok=True)
     out_file = os.path.join(
         result_path,

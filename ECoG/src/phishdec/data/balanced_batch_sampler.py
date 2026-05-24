@@ -105,12 +105,12 @@ class BalancedBatchSampler(Sampler[List[int]]):
                 alloc[key] += 1
             return alloc
 
-        # one from each stratum first
+        
         for key in keys:
             alloc[key] += 1
         remaining = batch_size - n_keys
 
-        # distribute remainder evenly (plus random tie-break)
+        
         base = remaining // n_keys
         extra = remaining % n_keys
         for key in keys:

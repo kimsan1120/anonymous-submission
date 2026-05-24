@@ -12,12 +12,12 @@ from tqdm import tqdm
 
 try:
     from safetensors.torch import load_file as _safe_load_file
-except Exception:  # pragma: no cover - optional dependency
+except Exception:  
     _safe_load_file = None
 
 try:
     from peft import PeftModel
-except Exception:  # pragma: no cover - optional dependency
+except Exception:  
     PeftModel = None
 
 from .parser import parse_pred
@@ -826,7 +826,7 @@ def run_with_hf_generate(
         torch_dtype,
         adapter_path,
         merge_adapter,
-        label_token_ids=label_token_ids,  # type: ignore[arg-type]
+        label_token_ids=label_token_ids,  
     )
 
     first_device = next(model.parameters()).device
@@ -961,11 +961,11 @@ def run_with_hf_generate(
         else:
             sequences = gen_out
             step_logprobs = []
-        # NOTE:
-        # We use left padding. In that case, attention_mask.sum() gives the
-        # number of non-pad tokens, but the actual prompt starts after the
-        # left pads. Slicing from non-pad length can therefore include a tail
-        # of the prompt. Slice from the full encoded sequence length instead.
+        
+        
+        
+        
+        
         prompt_seq_len = enc["input_ids"].shape[1]
 
         for i in range(len(batch)):

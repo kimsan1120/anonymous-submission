@@ -31,7 +31,7 @@ def _prepare_run_dirs(cfg, exp_name: str, out_dir_override: Optional[str]):
         running_root = os.path.join("outputs", "runs", "running")
 
     if out_dir_override:
-        # If the override already points inside running_root, treat it as run_dir.
+        
         try:
             running_root_path = Path(running_root).resolve()
             override_path = Path(out_dir_override).resolve()
@@ -56,10 +56,10 @@ def _prepare_run_dirs(cfg, exp_name: str, out_dir_override: Optional[str]):
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=str, required=True, help="YAML config path")
-    parser.add_argument("--trainer", type=str, default=None, choices=["trl", "hf"], help="Override trainer type")
-    parser.add_argument("--deepspeed", type=str, default=None, help="Path to deepspeed config (optional)")
-    parser.add_argument("--out_dir", type=str, default=None, help="Override output run directory")
+    parser.add_argument("--config", type=str, required=True)
+    parser.add_argument("--trainer", type=str, default=None, choices=["trl", "hf"])
+    parser.add_argument("--deepspeed", type=str, default=None)
+    parser.add_argument("--out_dir", type=str, default=None)
     args = parser.parse_args()
 
     cfg = load_yaml_config(args.config)
@@ -78,7 +78,7 @@ def main() -> int:
     run_dir, final_run_dir, running_root, use_running = _prepare_run_dirs(cfg, exp_name, args.out_dir)
     os.makedirs(run_dir, exist_ok=True)
 
-    # If using a running dir, keep TB logs there during training.
+    
     train_cfg = cfg.setdefault("train", {})
     final_logging_dir = train_cfg.get("logging_dir")
     running_logging_root = None
@@ -110,7 +110,7 @@ def main() -> int:
                 raise RuntimeError(f"Final run_dir already exists: {final_run_dir}")
             shutil.move(run_dir, final_run_dir)
 
-            # Move TB logs back to final logging dir if configured.
+            
             if final_logging_dir and running_logging_root:
                 src_log_dir = os.path.join(running_logging_root, os.path.basename(final_run_dir))
                 if os.path.exists(src_log_dir):

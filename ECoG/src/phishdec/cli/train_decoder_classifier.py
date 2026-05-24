@@ -49,8 +49,8 @@ def _prepare_run_dirs(cfg, exp_name: str, out_dir_override: Optional[str]):
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=str, required=True, help="YAML config path")
-    parser.add_argument("--out_dir", type=str, default=None, help="Override output run directory")
+    parser.add_argument("--config", type=str, required=True)
+    parser.add_argument("--out_dir", type=str, default=None)
     args = parser.parse_args()
 
     cfg = load_yaml_config(args.config)

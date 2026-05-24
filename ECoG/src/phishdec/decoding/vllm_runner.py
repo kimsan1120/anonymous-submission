@@ -2,24 +2,24 @@ import inspect
 import os
 from typing import Any
 
-# vLLM uses multiprocessing workers. If the parent process has already touched
-# CUDA (e.g., via torch.cuda.is_available()), 'fork' can crash with
-# "Cannot re-initialize CUDA in forked subprocess". Prefer 'spawn' for safety.
+
+
+
 os.environ.setdefault("VLLM_WORKER_MULTIPROC_METHOD", "spawn")
 
 _VLLM_IMPORT_ERR = None
-try:  # pragma: no cover - optional dependency
+try:  
     from vllm import LLM, SamplingParams
-except Exception as e:  # pragma: no cover - optional dependency
+except Exception as e:  
     LLM = None
     SamplingParams = None
     _VLLM_IMPORT_ERR = e
 from tqdm import tqdm
 from .parser import parse_pred
 
-# Best-effort: disable torch.compile/inductor to avoid BackendCompilerFailed on some systems.
+
 os.environ.setdefault("TORCH_COMPILE_DISABLE", "1")
-try:  # pragma: no cover - optional
+try:  
     import torch._dynamo as dynamo
     dynamo.config.suppress_errors = True
 except Exception:
@@ -86,7 +86,7 @@ def _resolve_max_model_len(
         return max(1024, int(max_model_len))
     if truncate_prompt_tokens is None:
         return None
-    # Keep KV cache bounded by deriving context from prompt budget + generation budget.
+    
     return max(1024, int(truncate_prompt_tokens) + int(max_new_tokens) + 128)
 
 
@@ -291,8 +291,8 @@ def run_with_vllm(
     llm = LLM(**llm_kwargs)
     llm_tokenizer = _get_llm_tokenizer(llm)
 
-    # Manual truncation for older vLLM builds that don't honor
-    # `truncate_prompt_tokens` in SamplingParams.
+    
+    
     manual_prompt_cap = None
     if truncate_prompt_tokens is not None:
         manual_prompt_cap = int(truncate_prompt_tokens)
@@ -334,8 +334,8 @@ def run_with_vllm(
     try:
         sampling_params = SamplingParams(**sampling_kwargs)
     except TypeError as exc:
-        # Some vLLM builds reject unknown kwargs at runtime even when signature
-        # probing is inconclusive; retry without truncate_prompt_tokens.
+        
+        
         if (
             "truncate_prompt_tokens" in sampling_kwargs
             and "truncate_prompt_tokens" in str(exc)
@@ -357,8 +357,8 @@ def run_with_vllm(
         try:
             chunk_outputs = llm.generate(chunk_inputs, sampling_params)
         except Exception as exc:
-            # Safety net: if token length validation still fails, retry with
-            # stricter prompt cap derived from model context budget.
+            
+            
             msg = str(exc)
             if (
                 llm_tokenizer is not None

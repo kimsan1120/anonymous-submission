@@ -17,7 +17,7 @@ import yaml
 
 try:
     from scipy.optimize import linear_sum_assignment
-except Exception:
+except Exception:  
     linear_sum_assignment = None
 
 
@@ -133,6 +133,7 @@ def parse_predicted_evidence(evidence_section: str) -> list[EvidenceItem]:
     if not section:
         return []
 
+    
     pattern = re.compile(
         r"(?:^|\n)\s*(?:\d+\s*[\).]|[-*])\s*(.*?)(?=(?:\n\s*(?:\d+\s*[\).]|[-*])\s*)|\Z)",
         flags=re.DOTALL,
@@ -838,7 +839,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--results-csv", action="append", default=[])
     parser.add_argument("--run-dir", action="append", default=[])
     parser.add_argument("--glob", action="append", default=[])
-    parser.add_argument("--gold-csv", default=None, help="Optional explicit gold CSV for all inputs.")
+    parser.add_argument("--gold-csv", default=None)
     parser.add_argument("--evidence-variant", choices=("keep", "top1"), default="keep")
     parser.add_argument("--generated-col", default="gen")
     parser.add_argument("--result-input-col", default="input")
@@ -853,17 +854,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--span-match-threshold", type=float, default=0.5)
     parser.add_argument("--span-tokenizer", choices=("char", "word"), default="char")
     parser.add_argument("--rouge-tokenizer", choices=("char", "word"), default="word")
-    parser.add_argument("--prefer-offsets", action="store_true", help="Use [start,end] overlap when generated offsets exist.")
+    parser.add_argument("--prefer-offsets", action="store_true")
     parser.add_argument("--compute-bertscore", action="store_true")
     parser.add_argument(
         "--bertscore-only",
         action="store_true",
-        help="Compute only BERTScore from generated/gold explanations; skip span and ROUGE calculations.",
+
     )
     parser.add_argument("--bertscore-model", default="klue/roberta-base")
     parser.add_argument("--bertscore-batch-size", type=int, default=16)
     parser.add_argument("--bertscore-max-length", type=int, default=512)
-    parser.add_argument("--bertscore-device", default="auto", help="auto, cpu, cuda, cuda:0, ...")
+    parser.add_argument("--bertscore-device", default="auto")
     parser.add_argument("--out-prefix", default=None)
     parser.add_argument("--update-metrics", action="store_true")
     parser.add_argument("--metrics-key", default="evidence_explanation")

@@ -415,9 +415,9 @@ def parse_args() -> argparse.Namespace:
             "malicious-only explanation cues."
         )
     )
-    parser.add_argument("--results-csv", action="append", default=[], help="Path to a results*.csv file.")
-    parser.add_argument("--run-dir", action="append", default=[], help="Run directory containing results*.csv.")
-    parser.add_argument("--glob", action="append", default=[], help="Glob for run dirs or results CSVs.")
+    parser.add_argument("--results-csv", action="append", default=[])
+    parser.add_argument("--run-dir", action="append", default=[])
+    parser.add_argument("--glob", action="append", default=[])
     parser.add_argument("--text-col", default="gen")
     parser.add_argument("--pred-col", default="pred")
     parser.add_argument("--label-col", default="label")
@@ -427,16 +427,15 @@ def parse_args() -> argparse.Namespace:
         "--text-scope",
         choices=("explanation", "gen"),
         default="explanation",
-        help="Use only text after '설명:' by default; use gen to scan the full generated output.",
-    )
-    parser.add_argument("--out-prefix", default=None, help="Prefix for JSON/CSV outputs.")
+  )
+    parser.add_argument("--out-prefix", default=None)
     parser.add_argument("--out-json", default=None)
     parser.add_argument("--summary-csv", default=None)
     parser.add_argument("--details-csv", default=None)
     parser.add_argument(
         "--update-metrics",
         action="store_true",
-        help="Write the per-run summary into each run_dir/metrics.json.",
+
     )
     parser.add_argument("--metrics-key", default="label_explanation_consistency")
     return parser.parse_args()

@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 import math
 import os
-import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -35,20 +34,19 @@ def parse_args() -> argparse.Namespace:
             "decoder classification, then Stage 2 label-first reason SFT, then label eval."
         )
     )
-    parser.add_argument("--model", action="append", default=[], help="Format: alias=model_ref or model_ref")
-    parser.add_argument("--scenario-letters", default="ABCD", help="SMS scenarios only: A, B, C, D")
+    parser.add_argument("--model", action="append", default=[])
+    parser.add_argument("--scenario-letters", default="ABCD")
     parser.add_argument(
         "--eval-target-ids",
         default=None,
-        help="Optional comma/space-separated eval ids to run, e.g. D2 or D2,C1. Training scenarios are kept as needed.",
+
     )
     parser.add_argument("--bench-name", default=None)
     parser.add_argument(
         "--suite-name",
         default=SUITE_NAME,
         help=(
-            "Benchmark namespace under configs/generated, outputs/runs/benchmarks, and outputs/analysis. "
-            "Use evidence_reason_suite to store SMS and Voice runs under one benchmark root."
+
         ),
     )
     parser.add_argument(
@@ -56,36 +54,34 @@ def parse_args() -> argparse.Namespace:
         choices=("nested", "flat"),
         default="nested",
         help=(
-            "Directory layout for benchmark outputs. nested keeps "
-            "outputs/runs/benchmarks/{suite}/{bench}/{model}; flat uses "
-            "outputs/runs/benchmarks/{suite}/{model} for category roots such as label_evidence."
+
         ),
     )
-    parser.add_argument("--run", action="store_true", help="Execute configs through scripts/run_decode.sh")
+    parser.add_argument("--run", action="store_true")
     parser.add_argument("--skip-prepare-data", action="store_true")
     parser.add_argument("--stages", choices=("both", "stage1", "stage2"), default="both")
     parser.add_argument(
         "--peft",
         choices=("none", "lora", "dora"),
         default="none",
-        help="Fine-tuning mode for both stages. Default is full SFT/full fine-tune.",
+
     )
     parser.add_argument(
         "--stage1-peft",
         choices=("none", "lora", "dora"),
         default=None,
-        help="Override Stage 1 fine-tuning mode. Defaults to --peft.",
+
     )
     parser.add_argument(
         "--stage2-peft",
         choices=("none", "lora", "dora"),
         default=None,
-        help="Override Stage 2 fine-tuning mode. Defaults to --peft.",
+
     )
     parser.add_argument(
         "--skip-length-profiles",
         action="store_true",
-        help="Use conservative static batch planning instead of noevidence reason length profiles.",
+
     )
 
     parser.add_argument("--cuda-visible-devices", default=None)
@@ -116,7 +112,7 @@ def parse_args() -> argparse.Namespace:
         "--stage1-lr",
         type=float,
         default=None,
-        help="Stage 1 LR. Default: 2e-4 for LoRA/Dora, 2e-5 for full fine-tune.",
+
     )
     parser.add_argument("--stage1-batch-size", type=int, default=None)
     parser.add_argument("--stage1-grad-accum", type=int, default=None)
@@ -133,7 +129,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--stage1-metric-for-best-model",
         default="evidence_aware_score",
-        help="Metric used by train_decoder_classifier for best_checkpoint.",
+
     )
     parser.add_argument("--stage2-label-loss-weight", type=float, default=1.0)
     parser.add_argument("--stage2-explanation-loss-weight", type=float, default=0.5)
@@ -178,16 +174,14 @@ def parse_args() -> argparse.Namespace:
         "--joint-reconstruction-pooling",
         choices=("mean", "last"),
         default="mean",
-        help="Pooling over generated explanation token hidden states for reconstruction.",
+
     )
     parser.add_argument(
         "--joint-reconstruction-scope",
         choices=("all", "explanation"),
         default="all",
         help=(
-            "Token scope used by the reconstruction head. all keeps the existing label-after-target path; "
-            "explanation uses only the explanation body after the '설명:' marker."
-        ),
+     ),
     )
     parser.add_argument(
         "--stage2-target-format",
@@ -203,21 +197,29 @@ def parse_args() -> argparse.Namespace:
         "--stage2-from-base",
         action="store_true",
         help=(
-            "Ablation mode: train Stage 2 directly from the base model instead of "
-            "warm-starting from a completed Stage 1 checkpoint. Use with --stages stage2 "
-            "for a strict one-stage evidence/reason run."
+
         ),
     )
     parser.add_argument("--dataloader-num-workers", type=int, default=2)
     parser.add_argument("--save-total-limit", type=int, default=1)
     parser.add_argument("--train-eval-steps", type=int, default=0)
     parser.add_argument("--train-save-steps", type=int, default=0)
-    parser.add_argument("--early-stopping-patience", type=int, default=0)
+    parser.add_argument(
+        "--early-stopping-patience",
+        type=int,
+        default=0,
+
+    )
     parser.add_argument("--early-stopping-threshold", type=float, default=0.0)
     parser.add_argument("--early-stopping-min-epochs", type=float, default=3.0)
     parser.add_argument("--early-stopping-min-steps", type=int, default=0)
     parser.add_argument("--logging-steps-ratio", type=float, default=0.05)
-    parser.add_argument("--patience-ratio", type=float, default=0.10)
+    parser.add_argument(
+        "--patience-ratio",
+        type=float,
+        default=0.10,
+
+    )
     parser.add_argument("--batch-scale", type=float, default=1.0)
     parser.add_argument("--gradient-checkpointing", action="store_true")
     parser.add_argument("--no-length-bucket", dest="length_bucket", action="store_false")
@@ -239,19 +241,18 @@ def parse_args() -> argparse.Namespace:
         "--eval-data-parallel",
         action="store_true",
         help=(
-            "Run eval targets for each trained scenario in parallel, with one single-GPU "
-            "model copy per eval process instead of HF device_map auto-sharding."
+
         ),
     )
     parser.add_argument(
         "--eval-data-parallel-devices",
         default=None,
-        help="Comma-separated GPU ids used for --eval-data-parallel. Defaults to --cuda-visible-devices or 0.",
+
     )
     parser.add_argument(
         "--force-rerun-eval",
         action="store_true",
-        help="Ignore completed eval runs and create fresh eval runs while still reusing completed training runs.",
+
     )
     parser.add_argument("--profile-env", default="decoder311")
     parser.add_argument("--refresh-length-profiles", action="store_true")
@@ -259,7 +260,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--validation-subset-dir",
         default=str(ROOT / "data" / "arc" / "validation_subsets"),
-    )
+)
     parser.set_defaults(length_bucket=True, use_validation=True)
     return parser.parse_args()
 
@@ -299,6 +300,20 @@ def _select_scenarios(raw_value: str, variant_root: Path) -> tuple[reason_suite.
         if letter in seen:
             continue
         base = base_by_letter[letter]
+        eval_targets = (
+            reason_suite.EvalTarget(
+                f"{letter}1",
+                "test",
+                reason_suite.repo_rel(variant_root / f"{letter}_test.csv"),
+                "text",
+            ),
+            reason_suite.EvalTarget(
+                f"{letter}2",
+                "challenging",
+                reason_suite.repo_rel(variant_root / f"{letter}_challenge.csv"),
+                "text",
+            ),
+        )
         scenarios.append(
             reason_suite.Scenario(
                 letter=letter,
@@ -309,7 +324,7 @@ def _select_scenarios(raw_value: str, variant_root: Path) -> tuple[reason_suite.
                 train_eval_csv=reason_suite.repo_rel(variant_root / f"{letter}_validation.csv"),
                 prompt_instruction_path=SMS_PROMPT,
                 train_text_col="text",
-                eval_targets=base.eval_targets,
+                eval_targets=eval_targets,
             )
         )
         seen.add(letter)
@@ -323,17 +338,15 @@ def ensure_prepared_data(
 ) -> None:
     expected = [variant_root / f"{scenario.letter}_train.csv" for scenario in scenarios]
     expected += [variant_root / f"{scenario.letter}_validation.csv" for scenario in scenarios]
-    if args.skip_prepare_data and all(path.exists() for path in expected):
+    expected += [reason_suite.ROOT / target.csv_path for scenario in scenarios for target in scenario.eval_targets]
+    missing = [path for path in expected if not path.exists()]
+    if not missing:
         return
-    cmd = [
-        sys.executable,
-        "scripts/prepare_sms_evidence_reason_suite_data.py",
-        "--variant",
-        EVIDENCE_VARIANT,
-        "--out-root",
-        reason_suite.repo_rel(PREPARED_DATA_ROOT),
-    ]
-    subprocess.run(cmd, cwd=str(ROOT), check=True)
+    missing_rel = [reason_suite.repo_rel(path) for path in missing]
+    raise FileNotFoundError(
+        "Missing prepared SMS evidence/keep splits. The public artifact expects "
+        f"prebuilt files under {reason_suite.repo_rel(variant_root)}; missing: {missing_rel}"
+    )
 
 
 def _fallback_batch_plan(args: argparse.Namespace) -> dict[str, Any]:
@@ -376,14 +389,9 @@ def _stage1_available(scenario: reason_suite.Scenario) -> bool:
 
 
 def _stage1_test_csv(scenario_letter: str) -> str:
-    if scenario_letter == "A":
-        return "data/sms/in_domain/challenging.csv"
-    if scenario_letter == "B":
-        return "data/sms/ood/challenging/credit_challenging.csv"
-    if scenario_letter == "C":
-        return "data/sms/ood/challenging/finance_challenging.csv"
-    if scenario_letter == "D":
-        return "data/sms/ood/challenging/parcel_challenging.csv"
+    letter = str(scenario_letter).strip().upper()
+    if letter in {"A", "B", "C", "D"}:
+        return f"data/sms/evidence/keep/{letter}_challenge.csv"
     raise ValueError(f"No stage1 test CSV for {scenario_letter}")
 
 
@@ -403,7 +411,6 @@ def build_stage1_cfg(
     eval_batch_size = (
         args.stage1_eval_batch_size if args.stage1_eval_batch_size is not None else int(batch_plan["eval_batch_size"])
     )
-    patience = int(args.early_stopping_patience) if int(args.early_stopping_patience) > 0 else 2
     cfg = {
         "exp_name": voice_suite._pipeline_exp_name(model["alias"], scenario, "stage1_evidence"),
         "task": "train_decoder_classifier",
@@ -461,10 +468,7 @@ def build_stage1_cfg(
             "logging_steps": 20,
             "metric_for_best_model": str(args.stage1_metric_for_best_model),
             "greater_is_better": True,
-            "early_stopping_patience": patience,
-            "early_stopping_threshold": float(args.early_stopping_threshold),
             "min_epoch_for_best_model": 1,
-            "min_epoch_for_early_stopping": 1,
             "report_to": args.report_to,
             "logging_dir": "outputs/runs/tb_logs/sms/evidence_reason_suite/stage1",
         },

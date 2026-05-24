@@ -30,15 +30,15 @@ SCENARIOS: tuple[dict[str, Any], ...] = (
     {
         "letter": "A",
         "modality": "sms",
-        "train_csv": "data/sms/reason/A_train.csv",
+        "train_csv": "data/sms/evidence/keep/A_train.csv",
         "prompt_instruction_path": str(SMS_PROMPT),
         "train_text_col": "text",
         "eval_targets": (
-            {"eval_id": "A1", "split_name": "test", "csv_path": "data/sms/in_domain/test.csv", "text_col": "text"},
+            {"eval_id": "A1", "split_name": "test", "csv_path": "data/sms/evidence/keep/A_test.csv", "text_col": "text"},
             {
                 "eval_id": "A2",
                 "split_name": "challenging",
-                "csv_path": "data/sms/in_domain/challenging.csv",
+                "csv_path": "data/sms/evidence/keep/A_challenge.csv",
                 "text_col": "text",
             },
         ),
@@ -46,20 +46,20 @@ SCENARIOS: tuple[dict[str, Any], ...] = (
     {
         "letter": "B",
         "modality": "sms",
-        "train_csv": "data/sms/reason/B_train.csv",
+        "train_csv": "data/sms/evidence/keep/B_train.csv",
         "prompt_instruction_path": str(SMS_PROMPT),
         "train_text_col": "text",
         "eval_targets": (
             {
                 "eval_id": "B1",
                 "split_name": "test",
-                "csv_path": "data/sms/ood/test/credit_test.csv",
+                "csv_path": "data/sms/evidence/keep/B_test.csv",
                 "text_col": "text",
             },
             {
                 "eval_id": "B2",
                 "split_name": "challenging",
-                "csv_path": "data/sms/ood/challenging/credit_challenging.csv",
+                "csv_path": "data/sms/evidence/keep/B_challenge.csv",
                 "text_col": "text",
             },
         ),
@@ -67,20 +67,20 @@ SCENARIOS: tuple[dict[str, Any], ...] = (
     {
         "letter": "C",
         "modality": "sms",
-        "train_csv": "data/sms/reason/C_train.csv",
+        "train_csv": "data/sms/evidence/keep/C_train.csv",
         "prompt_instruction_path": str(SMS_PROMPT),
         "train_text_col": "text",
         "eval_targets": (
             {
                 "eval_id": "C1",
                 "split_name": "test",
-                "csv_path": "data/sms/ood/test/finance_test.csv",
+                "csv_path": "data/sms/evidence/keep/C_test.csv",
                 "text_col": "text",
             },
             {
                 "eval_id": "C2",
                 "split_name": "challenging",
-                "csv_path": "data/sms/ood/challenging/finance_challenging.csv",
+                "csv_path": "data/sms/evidence/keep/C_challenge.csv",
                 "text_col": "text",
             },
         ),
@@ -88,20 +88,20 @@ SCENARIOS: tuple[dict[str, Any], ...] = (
     {
         "letter": "D",
         "modality": "sms",
-        "train_csv": "data/sms/reason/D_train.csv",
+        "train_csv": "data/sms/evidence/keep/D_train.csv",
         "prompt_instruction_path": str(SMS_PROMPT),
         "train_text_col": "text",
         "eval_targets": (
             {
                 "eval_id": "D1",
                 "split_name": "test",
-                "csv_path": "data/sms/ood/test/parcel_test.csv",
+                "csv_path": "data/sms/evidence/keep/D_test.csv",
                 "text_col": "text",
             },
             {
                 "eval_id": "D2",
                 "split_name": "challenging",
-                "csv_path": "data/sms/ood/challenging/parcel_challenging.csv",
+                "csv_path": "data/sms/evidence/keep/D_challenge.csv",
                 "text_col": "text",
             },
         ),
@@ -109,15 +109,15 @@ SCENARIOS: tuple[dict[str, Any], ...] = (
     {
         "letter": "E",
         "modality": "voice",
-        "train_csv": "data/voice/reason/E_train.csv",
+        "train_csv": "data/voice/evidence/keep/E_train.csv",
         "prompt_instruction_path": str(VOICE_PROMPT),
         "train_text_col": "text",
         "eval_targets": (
-            {"eval_id": "E1", "split_name": "test", "csv_path": "data/voice/in_domain/test.csv", "text_col": "text"},
+            {"eval_id": "E1", "split_name": "test", "csv_path": "data/voice/evidence/keep/E_test.csv", "text_col": "text"},
             {
                 "eval_id": "E2",
                 "split_name": "challenging",
-                "csv_path": "data/voice/in_domain/challenge.csv",
+                "csv_path": "data/voice/evidence/keep/E_challenge.csv",
                 "text_col": "text",
             },
         ),
@@ -125,20 +125,20 @@ SCENARIOS: tuple[dict[str, Any], ...] = (
     {
         "letter": "F",
         "modality": "voice",
-        "train_csv": "data/voice/reason/F_train.csv",
+        "train_csv": "data/voice/evidence/keep/F_train.csv",
         "prompt_instruction_path": str(VOICE_PROMPT),
         "train_text_col": "text",
         "eval_targets": (
             {
                 "eval_id": "F1",
                 "split_name": "test",
-                "csv_path": "data/voice/ood/test/ood_test_finance.csv",
+                "csv_path": "data/voice/evidence/keep/F_test.csv",
                 "text_col": "text",
             },
             {
                 "eval_id": "F2",
                 "split_name": "challenging",
-                "csv_path": "data/voice/ood/challenging/finance_ood_challenge.csv",
+                "csv_path": "data/voice/evidence/keep/F_challenge.csv",
                 "text_col": "text",
             },
         ),
@@ -146,20 +146,20 @@ SCENARIOS: tuple[dict[str, Any], ...] = (
     {
         "letter": "G",
         "modality": "voice",
-        "train_csv": "data/voice/reason/G_train.csv",
+        "train_csv": "data/voice/evidence/keep/G_train.csv",
         "prompt_instruction_path": str(VOICE_PROMPT),
         "train_text_col": "text",
         "eval_targets": (
             {
                 "eval_id": "G1",
                 "split_name": "test",
-                "csv_path": "data/voice/ood/test/ood_test_government.csv",
+                "csv_path": "data/voice/evidence/keep/G_test.csv",
                 "text_col": "text",
             },
             {
                 "eval_id": "G2",
                 "split_name": "challenging",
-                "csv_path": "data/voice/ood/challenging/government_ood_challenge.csv",
+                "csv_path": "data/voice/evidence/keep/G_challenge.csv",
                 "text_col": "text",
             },
         ),
@@ -192,11 +192,11 @@ def _select_scenarios(raw_value: str) -> tuple[dict[str, Any], ...]:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Profile token lengths for no-evidence reason suite A~G data.")
-    p.add_argument("--model", action="append", default=[], help="Format: alias=model_ref or model_ref")
+    p.add_argument("--model", action="append", default=[])
     p.add_argument(
         "--scenario-letters",
         default="ALL",
-        help="Scenario letters to profile, e.g. BCDFG or B,C,D,F,G. Default: ALL",
+
     )
     p.add_argument("--sms-max-length", type=int, default=1000)
     p.add_argument("--voice-max-length", type=int, default=2200)
@@ -204,11 +204,11 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--output-json",
         default=str(PREPARED_DATA_ROOT / "length_profiles.json"),
-    )
+)
     p.add_argument(
         "--output-csv",
         default=str(PREPARED_DATA_ROOT / "length_profiles.csv"),
-    )
+)
     p.add_argument("--batch-size", type=int, default=256)
     return p.parse_args()
 

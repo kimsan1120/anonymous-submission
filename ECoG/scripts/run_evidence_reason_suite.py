@@ -234,8 +234,7 @@ def parse_args(
         "--suite-name",
         default="evidence_reason_suite",
         help=(
-            "Common benchmark namespace used by both child runners. "
-            "The default stores SMS and Voice under outputs/runs/benchmarks/evidence_reason_suite."
+
         ),
     )
     parser.add_argument(
@@ -244,14 +243,13 @@ def parse_args(
         const="true",
         default="false",
         help=(
-            "Run train/eval by eval-target priority instead of modality blocks. "
-            "Default order: D2,D1,C2,F2,B2,A2,C1,B1,F1,E2,G2,A1,E1,G1."
+
         ),
     )
     parser.add_argument(
         "--per-alphabet-order",
         default=",".join(DEFAULT_PER_ALPHABET_ORDER),
-        help="Comma/space-separated eval target order used by --per-alphabet.",
+
     )
     parser.add_argument("--slack-alert", "--slack_alert", action="store_true")
     parser.add_argument("--slack-settings", default=None)
@@ -268,27 +266,27 @@ def parse_args(
     parser.add_argument(
         "--skip-fullgen-quality-report",
         action="store_true",
-        help="Disable the quality part of the automatic benchmark performance report.",
+
     )
     parser.add_argument(
         "--fullgen-quality-report-out-dir",
         default="reports/evidence_explanation_metrics",
-        help="Legacy quality-report output directory. The new protocol uses --benchmark-performance-out-root.",
+
     )
     parser.add_argument(
         "--skip-benchmark-performance-report",
         action="store_true",
-        help="Disable the automatic outputs/runs/benchmark_performance report.",
+
     )
     parser.add_argument(
         "--benchmark-performance-out-root",
         default="outputs/runs/benchmark_performance",
-        help="Root directory for automatic benchmark performance artifacts.",
+
     )
     parser.add_argument(
         "--skip-benchmark-performance-bertscore",
         action="store_true",
-        help="Skip BERTScore when writing benchmark performance quality reports.",
+
     )
     args, _ = parser.parse_known_args(argv)
     letters = _parse_letters(args.scenario_letters)

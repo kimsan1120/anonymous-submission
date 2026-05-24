@@ -35,20 +35,20 @@ def parse_args() -> argparse.Namespace:
         "--expected",
         type=Path,
         default=DEFAULT_EXPECTED,
-        help="Expected benchmark JSON for --check, or output path for --write-expected.",
+
     )
-    parser.add_argument("--write-expected", action="store_true", help="Write the current normalized benchmark JSON.")
-    parser.add_argument("--check", action="store_true", help="Compare the current dry-run benchmark with --expected.")
+    parser.add_argument("--write-expected", action="store_true")
+    parser.add_argument("--check", action="store_true")
     parser.add_argument(
         "--observed-output",
         type=Path,
         default=None,
-        help="Optional path to write the observed JSON during --check.",
+
     )
     parser.add_argument(
         "--install-local-package",
         action="store_true",
-        help="Run `python -m pip install -e .` before the benchmark. Dry-run itself only needs the standard library.",
+
     )
     args = parser.parse_args()
     if not args.write_expected and not args.check:
