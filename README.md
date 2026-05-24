@@ -114,11 +114,11 @@ python scripts/run_ablation.py --method last_label_ablation --seed 10 --run
 ### Annotation Quality and Privacy
 ```
 Before model training and evaluation, we de-identified the dataset to remove personally identifiable information, including names, addresses, phone numbers, and account numbers. We used GPT-4o-mini with a fixed redaction prompt to detect and redact PII. A manual audit of a randomly sampled 10% subset found no remaining sensitive PII. The main failure mode was conservative over-redaction, which affected 0.874% of spans and typically involved non-identifying fields such as timestamps and dates.
-
-We also conducted a separate human audit to assess whether the evidence and rationale annotations were justified by the input and label. Five annotators rated each audited instance as **Pass**, **Acceptable**, or **Invalid**. **Pass** indicates that the evidence and rationale are directly supported by the input and label; **Acceptable** indicates minor incompleteness or ambiguity; and **Invalid** indicates unsupported or label-inconsistent annotations. Across 1,916 audited instances from SMS and voice challenging cases, 69.87% were rated as Pass, 27.00% as Acceptable, and 3.13% as Invalid. These results support using the annotations as reference evidence and rationales for supervision and evaluation.
-
-The anonymous supplementary repository includes the de-identified dataset, scenario split definitions, annotation and redaction prompts, filtering rules, sanitized examples, model configurations, and evaluation scripts. The released data exclude sensitive personal information.
 ```
+```
+We also conducted a separate human audit to assess whether the evidence and rationale annotations were justified by the input and label. Five annotators rated each audited instance as **Pass**, **Acceptable**, or **Invalid**. **Pass** indicates that the evidence and rationale are directly supported by the input and label; **Acceptable** indicates minor incompleteness or ambiguity; and **Invalid** indicates unsupported or label-inconsistent annotations. Across 1,916 audited instances from SMS and voice challenging cases, 69.87% were rated as Pass, 27.00% as Acceptable, and 3.13% as Invalid. These results support using the annotations as reference evidence and rationales for supervision and evaluation.
+```
+
 ## Training Configuration
 
 ### Common Settings
