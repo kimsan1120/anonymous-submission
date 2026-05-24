@@ -161,5 +161,4 @@ The `label_evidence` and `last_label_ablation` settings use `--joint-stage12`.
 - Evidence alpha: `1.0`
 - Evidence beta: `1.0`
 - Negative downsampling ratio: `8`
-
 ```
