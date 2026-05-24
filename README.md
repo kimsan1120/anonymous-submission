@@ -141,7 +141,7 @@ We also conducted a separate human audit to assess whether the evidence and rati
 
 ### Ablation Settings
 
-| Ablation | Target Format | Evidence | Rationale | Reconstruction / Consistency Setting |
+| Ablation | Target Format | Evidence | Rationale(Explanation) | Consistency Setting |
 |---|---|---:|---:|---|
 | `label_evidence` | `label_span` | yes | no | `0` |
 | `label_rationale` | `label_first_explanation` | no | yes | `0` |
@@ -161,4 +161,5 @@ The `label_evidence` and `last_label_ablation` settings use `--joint-stage12`.
 - Evidence alpha: `1.0`
 - Evidence beta: `1.0`
 - Negative downsampling ratio: `8`
+
 ```
