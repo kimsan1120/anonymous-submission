@@ -112,11 +112,54 @@ python scripts/run_ablation.py --method last_label_ablation --seed 10 --run
 | GPT-5.4 | Zeroshot | 81.43 | 80.67 | 41.74 | 33.74 | 82.55 | 82.42 | 90.60 | 90.42 |
 
 ### Annotation Quality and Privacy
-
+```
 Before model training and evaluation, we de-identified the dataset to remove personally identifiable information, including names, addresses, phone numbers, and account numbers. We used GPT-4o-mini with a fixed redaction prompt to detect and redact PII. A manual audit of a randomly sampled 10% subset found no remaining sensitive PII. The main failure mode was conservative over-redaction, which affected 0.874% of spans and typically involved non-identifying fields such as timestamps and dates.
 
 We also conducted a separate human audit to assess whether the evidence and rationale annotations were justified by the input and label. Five annotators rated each audited instance as **Pass**, **Acceptable**, or **Invalid**. **Pass** indicates that the evidence and rationale are directly supported by the input and label; **Acceptable** indicates minor incompleteness or ambiguity; and **Invalid** indicates unsupported or label-inconsistent annotations. Across 1,916 audited instances from SMS and voice challenging cases, 69.87% were rated as Pass, 27.00% as Acceptable, and 3.13% as Invalid. These results support using the annotations as reference evidence and rationales for supervision and evaluation.
 
 The anonymous supplementary repository includes the de-identified dataset, scenario split definitions, annotation and redaction prompts, filtering rules, sanitized examples, model configurations, and evaluation scripts. The released data exclude sensitive personal information.
+```
+## Training Configuration
+
+### Common Settings
+
+- Seed: `10`
+- dtype / eval dtype: `bf16`
+- Epochs: `7`
+- Learning rate: `3e-5`
+- Max sequence length:
+  - SMS: `1000`
+  - Voice: `2200`
+- Batch setting:
+  - Default GPUs: `0,1,2`
+  - Gradient accumulation steps: `5`
+  - Effective batch size: `15`
+- Full-generation evaluation: enabled
+- Evaluation `max_new_tokens`: `200`
+- Temperature: `0.0`
+- Repetition penalty: `1.1`
+
+### Ablation Settings
+
+| Ablation | Target Format | Evidence | Rationale | Reconstruction / Consistency Setting |
+|---|---|---:|---:|---|
+| `label_evidence` | `label_span` | yes | no | `0` |
+| `label_rationale` | `label_first_explanation` | no | yes | `0` |
+| `label_rationale_cons_0.0` | `label_first_explanation` | no | yes | lambda `0.0`, pooling `mean`, scope `explanation` |
+| `label_rationale_cons_0.05` | `label_first_explanation` | no | yes | lambda `0.05`, pooling `mean`, scope `explanation` |
+| `label_rationale_cons_0.1` | `label_first_explanation` | no | yes | lambda `0.1`, pooling `mean`, scope `explanation` |
+| `label_rationale_cons_0.2` | `label_first_explanation` | no | yes | lambda `0.2`, pooling `mean`, scope `explanation` |
+| `label_rationale_cons_last_pooling` | `label_first_explanation` | no | yes | lambda `0.1`, pooling `last`, scope `explanation` |
+| `last_label_ablation` | `span_explanation_label` | yes | yes | `0`, label placed last |
+
+## ECoG Hyperparameters
+
+The `label_evidence` and `last_label_ablation` settings use `--joint-stage12`.
+
+- Classification loss weight: `0.5`
+- Evidence loss weight: `1.0`
+- Evidence alpha: `1.0`
+- Evidence beta: `1.0`
+- Negative downsampling ratio: `8`
 
 ```
